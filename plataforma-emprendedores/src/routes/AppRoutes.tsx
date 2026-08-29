@@ -7,6 +7,7 @@ import { CatalogPage } from '../pages/learning/CatalogPage';
 import { LessonPage } from '../pages/learning/LessonPage';
 import { QuizPage } from '../pages/learning/QuizPage';
 import { InventoryPage } from '../pages/inventory/InventoryPage';
+import { SalesPage } from '../pages/sales/SalesPage';
 import { ProtectedRoute } from '../components/auth/ProtectedRoute';
 
 export const AppRoutes: React.FC = () => {
@@ -36,6 +37,16 @@ export const AppRoutes: React.FC = () => {
         element={
           <ProtectedRoute requireDiagnostic={true}>
             <InventoryPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Sales & Invoicing Module Route */}
+      <Route
+        path="/ventas"
+        element={
+          <ProtectedRoute requireDiagnostic={true}>
+            <SalesPage />
           </ProtectedRoute>
         }
       />
