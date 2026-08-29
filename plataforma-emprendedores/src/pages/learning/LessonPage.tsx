@@ -124,12 +124,35 @@ export const LessonPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'video' | 'lecture' | 'resources'>('lecture');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [editingLessonData, setEditingLessonData] = useState<LessonData | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
 
   const fetchLessonAndCourse = async () => {
-    setLoading(true);
+    // 1. Initial instant render with fallback
+    const targetFallback =
+      FALLBACK_LESSONS.find((l) => l.slug === lessonSlug) || FALLBACK_LESSONS[0];
+    setCurrentLesson(targetFallback);
+
+    const initialSyl: SyllabusItem[] = FALLBACK_LESSONS.map((l) => ({
+      id: l.id,
+      title: l.title,
+      slug: l.slug,
+      type: `Lectura & Video • ${l.duration_minutes} min`,
+      completed: l.id === 'lesson-1',
+      active: l.slug === targetFallback.slug,
+    }));
+
+    initialSyl.push({
+      id: 'quiz-module-1',
+      title: 'Cuestionario Evaluativo del Módulo',
+      slug: 'quiz-module-1',
+      type: 'Evaluación • 10 pts',
+      completed: false,
+      active: false,
+      isQuiz: true,
+    });
+    setSyllabus(initialSyl);
+
     try {
-      // 1. Fetch course by slug
+      // 2. Non-blocking fetch from Supabase
       const { data: courseData } = await (supabase.from('courses') as any)
         .select('*')
         .eq('slug', courseSlug || 'lean-manufacturing')
@@ -138,7 +161,6 @@ export const LessonPage: React.FC = () => {
       if (courseData) {
         setCourse(courseData);
 
-        // 2. Fetch course modules
         const { data: modulesData } = await (supabase.from('course_modules') as any)
           .select('*')
           .eq('course_id', courseData.id)
@@ -147,7 +169,6 @@ export const LessonPage: React.FC = () => {
         if (modulesData && modulesData.length > 0) {
           setCurrentModule(modulesData[0]);
 
-          // 3. Fetch lessons
           const { data: lessonsData } = await (supabase.from('lessons') as any)
             .select('*')
             .eq('module_id', modulesData[0].id)
@@ -191,41 +212,11 @@ export const LessonPage: React.FC = () => {
             });
 
             setSyllabus(syl);
-            setLoading(false);
-            return;
           }
         }
       }
-
-      // Fallback behavior
-      const fallbackTarget =
-        FALLBACK_LESSONS.find((l) => l.slug === lessonSlug) || FALLBACK_LESSONS[0];
-      setCurrentLesson(fallbackTarget);
-
-      const fallbackSyl: SyllabusItem[] = FALLBACK_LESSONS.map((l) => ({
-        id: l.id,
-        title: l.title,
-        slug: l.slug,
-        type: `Lectura & Video • ${l.duration_minutes} min`,
-        completed: l.id === 'lesson-1',
-        active: l.slug === fallbackTarget.slug,
-      }));
-
-      fallbackSyl.push({
-        id: 'quiz-module-1',
-        title: 'Cuestionario Evaluativo del Módulo',
-        slug: 'quiz-module-1',
-        type: 'Evaluación • 10 pts',
-        completed: false,
-        active: false,
-        isQuiz: true,
-      });
-
-      setSyllabus(fallbackSyl);
     } catch (err) {
       console.error('Error loading lesson page:', err);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -271,19 +262,6 @@ export const LessonPage: React.FC = () => {
     fetchLessonAndCourse();
   };
 
-  if (loading) {
-    return (
-      <DashboardLayout title="Lección - Academia RutaPyme">
-        <div className="min-h-[400px] flex items-center justify-center">
-          <div className="flex items-center gap-3">
-            <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-            <span className="text-sm font-semibold text-on-surface-variant">Cargando lección dinámicamente...</span>
-          </div>
-        </div>
-      </DashboardLayout>
-    );
-  }
-
   const resourcesList = Array.isArray(currentLesson?.resources) && currentLesson.resources.length > 0
     ? currentLesson.resources
     : [
@@ -315,7 +293,7 @@ export const LessonPage: React.FC = () => {
                 className="px-4 py-2.5 bg-tertiary-container text-on-tertiary font-bold text-xs rounded-xl hover:bg-tertiary transition-colors flex items-center gap-1.5 cursor-pointer shadow-sm"
               >
                 <span className="material-symbols-outlined text-base">edit</span>
-                Editar Lección 
+                Editar Lección
               </button>
 
               <button

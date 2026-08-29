@@ -71,8 +71,12 @@ export const CatalogPage: React.FC = () => {
   ];
 
   const fetchCourses = async () => {
+    // Show sample courses immediately for zero-latency initial render
+    setCourses(sampleCourses);
+
     try {
-      await seedLearningData();
+      // Non-blocking background seed
+      seedLearningData().catch(() => {});
 
       const { data, error } = await (supabase.from('courses') as any)
         .select('*')
@@ -93,12 +97,9 @@ export const CatalogPage: React.FC = () => {
           rating: 4.9,
         }));
         setCourses(mapped);
-      } else {
-        setCourses(sampleCourses);
       }
     } catch (err) {
       console.error('Error fetching courses:', err);
-      setCourses(sampleCourses);
     }
   };
 
@@ -134,7 +135,7 @@ export const CatalogPage: React.FC = () => {
             className="px-5 py-2.5 bg-primary text-on-primary font-bold text-xs rounded-xl hover:bg-on-primary-fixed-variant transition-colors shadow-sm flex items-center gap-2 cursor-pointer self-start md:self-auto"
           >
             <span className="material-symbols-outlined text-base">add</span>
-            Crear Nuevo Curso 
+            Crear Nuevo Curso
           </button>
         )}
       </section>
