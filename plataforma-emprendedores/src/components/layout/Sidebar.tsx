@@ -44,12 +44,6 @@ export const Sidebar: React.FC = () => {
         })}
       </nav>
 
-      <div className="px-6 mt-8 mb-6">
-        <button className="w-full bg-primary hover:bg-on-primary-fixed-variant text-on-primary font-medium text-sm py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors duration-200 shadow-level-1 active:scale-[0.98] cursor-pointer">
-          <span className="material-symbols-outlined">add</span>
-          Nuevo Registro
-        </button>
-      </div>
 
       <div className="mt-auto px-4 space-y-1 text-sm font-medium border-t border-outline-variant/30 pt-4">
         <Link
