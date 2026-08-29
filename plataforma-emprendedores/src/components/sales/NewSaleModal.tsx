@@ -15,42 +15,89 @@ interface ProductItem {
   stock_quantity: number;
 }
 
+interface CustomerOption {
+  id: string;
+  name: string;
+  company: string;
+}
+
 export const NewSaleModal: React.FC<NewSaleModalProps> = ({
   isOpen,
   onClose,
   onSuccess,
 }) => {
-  const [customerName, setCustomerName] = useState<string>('Cliente de Ventanilla');
+  const [customerName, setCustomerName] = useState<string>('María Gómez');
   const [paymentMethod, setPaymentMethod] = useState<string>('Efectivo');
   const [selectedProductId, setSelectedProductId] = useState<string>('');
   const [quantity, setQuantity] = useState<number>(1);
+  
   const [availableProducts, setAvailableProducts] = useState<ProductItem[]>([]);
+  const [availableCustomers, setAvailableCustomers] = useState<CustomerOption[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const loadInventoryAndCustomers = async () => {
       try {
-        const { data } = await (supabase.from('inventory_items') as any).select('id, name, selling_price, stock_quantity');
-        if (data && data.length > 0) {
-          setAvailableProducts(data);
-          setSelectedProductId(data[0].id);
-        } else {
-          // Fallback sample products
-          const sample = [
+        const userRes = await supabase.auth.getUser();
+        const userId = userRes.data.user?.id || 'guest';
+
+        // 1. Load Inventory Products (Local + Supabase)
+        const invKey = `rutapyme_inventory_${userId}`;
+        let localInv: ProductItem[] = [];
+        try {
+          const stored = localStorage.getItem(invKey);
+          if (stored) localInv = JSON.parse(stored);
+        } catch (e) {
+          console.error(e);
+        }
+
+        const { data: supaInv } = await (supabase.from('inventory_items') as any).select('id, name, selling_price, stock_quantity');
+        let combinedInv: ProductItem[] = supaInv && supaInv.length > 0 ? supaInv : [];
+        
+        localInv.forEach((loc) => {
+          if (!combinedInv.some((c) => c.id === loc.id)) {
+            combinedInv.push(loc);
+          }
+        });
+
+        if (combinedInv.length === 0) {
+          combinedInv = [
             { id: 'demo-1', name: 'Silla Ergonómica Pro Black', selling_price: 245.00, stock_quantity: 142 },
             { id: 'demo-2', name: 'Teclado Inalámbrico K2 Slim', selling_price: 45.50, stock_quantity: 12 },
             { id: 'demo-3', name: 'Cafetera Espresso Barista Pro', selling_price: 899.00, stock_quantity: 45 },
           ];
-          setAvailableProducts(sample);
-          setSelectedProductId(sample[0].id);
         }
+
+        setAvailableProducts(combinedInv);
+        if (combinedInv.length > 0) setSelectedProductId(combinedInv[0].id);
+
+        // 2. Load Customers (Local + Sample)
+        const custKey = `rutapyme_customers_${userId}`;
+        let localCust: CustomerOption[] = [];
+        try {
+          const storedCust = localStorage.getItem(custKey);
+          if (storedCust) localCust = JSON.parse(storedCust);
+        } catch (e) {
+          console.error(e);
+        }
+
+        if (localCust.length === 0) {
+          localCust = [
+            { id: 'cli-1', name: 'María Gómez', company: 'Distribuidora del Norte' },
+            { id: 'cli-2', name: 'Carlos Ruiz', company: 'Abarrotes La Esquina' },
+            { id: 'cli-3', name: 'Luis Fernando', company: 'Supermercados LF' },
+          ];
+        }
+        setAvailableCustomers(localCust);
+        if (localCust.length > 0) setCustomerName(localCust[0].name);
+
       } catch (err) {
-        console.error('Error loading inventory products for sale:', err);
+        console.error('Error loading data for new sale modal:', err);
       }
     };
 
     if (isOpen) {
-      fetchProducts();
+      loadInventoryAndCustomers();
     }
   }, [isOpen]);
 
@@ -77,9 +124,51 @@ export const NewSaleModal: React.FC<NewSaleModalProps> = ({
 
     try {
       const userRes = await supabase.auth.getUser();
-      const userId = userRes.data.user?.id;
+      const userId = userRes.data.user?.id || 'guest';
 
-      if (userId) {
+      // 1. Discount stock in LocalStorage
+      const invKey = `rutapyme_inventory_${userId}`;
+      try {
+        const stored = localStorage.getItem(invKey);
+        if (stored) {
+          const invList = JSON.parse(stored);
+          const updatedInv = invList.map((item: any) => {
+            if (item.id === selectedProductId) {
+              return { ...item, stock_quantity: Math.max(0, item.stock_quantity - Number(quantity)) };
+            }
+            return item;
+          });
+          localStorage.setItem(invKey, JSON.stringify(updatedInv));
+        }
+      } catch (e) {
+        console.error(e);
+      }
+
+      // 2. Update Customer Total Spent in LocalStorage
+      const custKey = `rutapyme_customers_${userId}`;
+      try {
+        const storedCust = localStorage.getItem(custKey);
+        if (storedCust) {
+          const custFilter = JSON.parse(storedCust);
+          const updatedCust = custFilter.map((c: any) => {
+            if (c.name.toLowerCase() === customerName.toLowerCase()) {
+              return {
+                ...c,
+                totalSpent: (c.totalSpent || 0) + total,
+                lastPurchase: 'Hoy',
+                status: 'Cliente Activo',
+              };
+            }
+            return c;
+          });
+          localStorage.setItem(custKey, JSON.stringify(updatedCust));
+        }
+      } catch (e) {
+        console.error(e);
+      }
+
+      // 3. Supabase Sync if authenticated
+      if (userId !== 'guest') {
         const { data: invData } = await (supabase.from('invoices') as any)
           .insert({
             user_id: userId,
@@ -103,7 +192,6 @@ export const NewSaleModal: React.FC<NewSaleModalProps> = ({
             total_price: subtotal,
           });
 
-          // Discount inventory stock
           const newQty = Math.max(0, currentProduct.stock_quantity - Number(quantity));
           await (supabase.from('inventory_items') as any)
             .update({ stock_quantity: newQty })
@@ -111,7 +199,7 @@ export const NewSaleModal: React.FC<NewSaleModalProps> = ({
         }
       }
     } catch (err) {
-      console.error('Error saving sale in Supabase:', err);
+      console.error('Error saving sale:', err);
     } finally {
       setLoading(false);
       onSuccess(saleObj);
@@ -139,19 +227,29 @@ export const NewSaleModal: React.FC<NewSaleModalProps> = ({
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4 text-xs">
           <div>
-            <label className="block font-bold text-on-surface mb-1">Nombre del Cliente / Razón Social</label>
-            <input
-              type="text"
-              required
+            <label className="block font-bold text-on-surface mb-1">Cliente / Razon Social</label>
+            <select
               value={customerName}
               onChange={(e) => setCustomerName(e.target.value)}
-              placeholder="Ej. María Jiménez"
-              className="w-full p-3 rounded-xl border border-outline-variant bg-background text-on-surface focus:outline-none focus:border-primary"
+              className="w-full p-3 rounded-xl border border-outline-variant bg-background text-on-surface focus:outline-none focus:border-primary font-semibold text-xs mb-2"
+            >
+              {availableCustomers.map((c) => (
+                <option key={c.id} value={c.name}>
+                  {c.name} — ({c.company})
+                </option>
+              ))}
+            </select>
+            <input
+              type="text"
+              value={customerName}
+              onChange={(e) => setCustomerName(e.target.value)}
+              placeholder="O escribe nombre de cliente no registrado..."
+              className="w-full p-2.5 rounded-xl border border-outline-variant/60 bg-background text-on-surface focus:outline-none focus:border-primary text-xs"
             />
           </div>
 
           <div>
-            <label className="block font-bold text-on-surface mb-1">Producto a Vender</label>
+            <label className="block font-bold text-on-surface mb-1">Producto a Vender (del Inventario)</label>
             <select
               value={selectedProductId}
               onChange={(e) => setSelectedProductId(e.target.value)}
@@ -159,7 +257,7 @@ export const NewSaleModal: React.FC<NewSaleModalProps> = ({
             >
               {availableProducts.map((prod) => (
                 <option key={prod.id} value={prod.id}>
-                  {prod.name} — {formatCurrency(prod.selling_price)} (Stock: {prod.stock_quantity})
+                  {prod.name} — {formatCurrency(prod.selling_price)} (Stock actual: {prod.stock_quantity})
                 </option>
               ))}
             </select>

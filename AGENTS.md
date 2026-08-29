@@ -30,6 +30,9 @@ Plataforma web para gestión y aceleración de microemprendedores (React 19 + Ty
   - [`src/components/sales/NewSaleModal.tsx`](file:///c:/Proyecto%20Personales/UNITEC/plataforma-emprendedores/src/components/sales/NewSaleModal.tsx): Modal de registro de ventas rápidas con integración directa a existencias de inventario y facturación.
 - **Módulo de Reportes Financieros:**
   - [`src/pages/reports/ReportsPage.tsx`](file:///c:/Proyecto%20Personales/UNITEC/plataforma-emprendedores/src/pages/reports/ReportsPage.tsx): Vista principal basada en [`diseno/reporte.html`](file:///c:/Proyecto%20Personales/UNITEC/diseno/reporte.html) con tarjetas Bento KPI, gráficos de crecimiento, desglose de gastos y exportación a PDF y Excel (CSV).
+- **Módulo de Clientes & CRM:**
+  - [`src/pages/customers/CustomersPage.tsx`](file:///c:/Proyecto%20Personales/UNITEC/plataforma-emprendedores/src/pages/customers/CustomersPage.tsx): Directorio de clientes basado en [`diseno/clientes.html`](file:///c:/Proyecto%20Personales/UNITEC/diseno/clientes.html) con tarjetas Bento, niveles de lealtad, compras acumuladas en Córdobas (C$) y filtros.
+  - [`src/components/customers/CustomerModal.tsx`](file:///c:/Proyecto%20Personales/UNITEC/plataforma-emprendedores/src/components/customers/CustomerModal.tsx): Modal para crear y editar clientes.
 
 ## Reglas de Trabajo
 - Las maquetas y diseños de referencia residen en `./diseno/`. Solo se implementará el diseño visual cuando el usuario indique expresamente la ruta del archivo correspondiente en `diseno/`.

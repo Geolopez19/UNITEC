@@ -45,6 +45,24 @@ export const ReportsPage: React.FC = () => {
 
   useEffect(() => {
     const fetchFinancialData = async () => {
+      const userId = user?.id || 'guest';
+      const salesKey = `rutapyme_sales_${userId}`;
+      let sumSales = 0;
+
+      // 1. Local sales calculation
+      try {
+        const stored = localStorage.getItem(salesKey);
+        if (stored) {
+          const list = JSON.parse(stored);
+          if (Array.isArray(list) && list.length > 0) {
+            sumSales = list.reduce((acc: number, s: any) => (s.status !== 'Cancelado' ? acc + (Number(s.amount) || 0) : acc), 0);
+          }
+        }
+      } catch (e) {
+        console.error(e);
+      }
+
+      // 2. Supabase sales calculation
       try {
         if (user) {
           const { data: invData } = await (supabase.from('invoices') as any)
@@ -52,15 +70,17 @@ export const ReportsPage: React.FC = () => {
             .eq('status', 'paid');
 
           if (invData && invData.length > 0) {
-            const sum = invData.reduce((acc: number, item: any) => acc + (Number(item.total_amount) || 0), 0);
-            if (sum > 0) {
-              setTotalRevenue(sum);
-              setTotalExpenses(sum * 0.28); // Estimated 28% expense ratio
-            }
+            const supaSum = invData.reduce((acc: number, item: any) => acc + (Number(item.total_amount) || 0), 0);
+            if (supaSum > sumSales) sumSales = supaSum;
           }
         }
       } catch (err) {
         console.error('Error loading financial reports:', err);
+      }
+
+      if (sumSales > 0) {
+        setTotalRevenue(sumSales);
+        setTotalExpenses(sumSales * 0.28); // 28% operating expenses ratio
       }
     };
 
