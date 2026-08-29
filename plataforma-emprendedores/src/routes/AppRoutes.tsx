@@ -6,6 +6,7 @@ import { DashboardPage } from '../pages/DashboardPage';
 import { CatalogPage } from '../pages/learning/CatalogPage';
 import { LessonPage } from '../pages/learning/LessonPage';
 import { QuizPage } from '../pages/learning/QuizPage';
+import { InventoryPage } from '../pages/inventory/InventoryPage';
 import { ProtectedRoute } from '../components/auth/ProtectedRoute';
 
 export const AppRoutes: React.FC = () => {
@@ -25,6 +26,16 @@ export const AppRoutes: React.FC = () => {
         element={
           <ProtectedRoute requireDiagnostic={true}>
             <DashboardPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Inventory Module Route */}
+      <Route
+        path="/inventario"
+        element={
+          <ProtectedRoute requireDiagnostic={true}>
+            <InventoryPage />
           </ProtectedRoute>
         }
       />
