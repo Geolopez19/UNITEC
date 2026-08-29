@@ -15,12 +15,12 @@ Plataforma web para gestión y aceleración de microemprendedores (React 19 + Ty
   - [`src/pages/AuthPage.tsx`](file:///c:/Proyecto%20Personales/UNITEC/plataforma-emprendedores/src/pages/AuthPage.tsx): Login y registro con confirmación de correo.
   - [`src/data/diagnosticQuestions.ts`](file:///c:/Proyecto%20Personales/UNITEC/plataforma-emprendedores/src/data/diagnosticQuestions.ts): 10 preguntas de madurez digital.
   - [`src/pages/DiagnosticPage.tsx`](file:///c:/Proyecto%20Personales/UNITEC/plataforma-emprendedores/src/pages/DiagnosticPage.tsx): Cuestionario interactivo basado en [`diseno/cuestenario.html`](file:///c:/Proyecto%20Personales/UNITEC/diseno/cuestenario.html).
-- **Plataforma de Aprendizaje LMS (Estilo Platzi - Dinámica & Roles):**
-  - [`src/pages/learning/CatalogPage.tsx`](file:///c:/Proyecto%20Personales/UNITEC/plataforma-emprendedores/src/pages/learning/CatalogPage.tsx): Catálogo de cursos dinámico desde Supabase.
-  - [`src/pages/learning/LessonPage.tsx`](file:///c:/Proyecto%20Personales/UNITEC/plataforma-emprendedores/src/pages/learning/LessonPage.tsx): Vista de lección dinámica con video, Markdown, recursos y temario.
-  - [`src/pages/learning/QuizPage.tsx`](file:///c:/Proyecto%20Personales/UNITEC/plataforma-emprendedores/src/pages/learning/QuizPage.tsx): Evaluación interactiva con retroalimentación e inserción de intentos.
-  - [`src/components/learning/CourseEditorModal.tsx`](file:///c:/Proyecto%20Personales/UNITEC/plataforma-emprendedores/src/components/learning/CourseEditorModal.tsx) y [`LessonEditorModal.tsx`](file:///c:/Proyecto%20Personales/UNITEC/plataforma-emprendedores/src/components/learning/LessonEditorModal.tsx): Modales de creación/edición exclusiva para usuarios con rol `admin`.
-  - [`src/lib/seedLearningData.ts`](file:///c:/Proyecto%20Personales/UNITEC/plataforma-emprendedores/src/lib/seedLearningData.ts): Sembrado automático de cursos y lecciones iniciales.
+- **Plataforma de Aprendizaje LMS Rediseñada:**
+  - [`src/pages/learning/CatalogPage.tsx`](file:///c:/Proyecto%20Personales/UNITEC/plataforma-emprendedores/src/pages/learning/CatalogPage.tsx): Catálogo de cursos dinámico.
+  - [`src/pages/learning/LessonPage.tsx`](file:///c:/Proyecto%20Personales/UNITEC/plataforma-emprendedores/src/pages/learning/LessonPage.tsx): Vista de lección moderna con navegación inferior, temario visual y marcado de lecciones completadas.
+  - [`src/components/learning/VideoPlayer.tsx`](file:///c:/Proyecto%20Personales/UNITEC/plataforma-emprendedores/src/components/learning/VideoPlayer.tsx): Reproductor de video privado con poster interactivo libre de anuncios.
+  - [`src/components/learning/LessonEditorModal.tsx`](file:///c:/Proyecto%20Personales/UNITEC/plataforma-emprendedores/src/components/learning/LessonEditorModal.tsx): Editor por pestañas para instructores con previsualización en vivo.
+  - [`src/pages/learning/QuizPage.tsx`](file:///c:/Proyecto%20Personales/UNITEC/plataforma-emprendedores/src/pages/learning/QuizPage.tsx): Evaluaciones interactivas.
 
 ## Reglas de Trabajo
 - Las maquetas y diseños de referencia residen en `./diseno/`. Solo se implementará el diseño visual cuando el usuario indique expresamente la ruta del archivo correspondiente en `diseno/`.

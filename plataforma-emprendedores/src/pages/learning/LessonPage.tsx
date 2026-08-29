@@ -128,15 +128,39 @@ export const LessonPage: React.FC = () => {
 
   // Reliable completion state
   const [isLessonCompleted, setIsLessonCompleted] = useState<boolean>(false);
-  const [completedCount, setCompletedCount] = useState<number>(1);
+  const [completedCount, setCompletedCount] = useState<number>(0);
   const [totalCount, setTotalCount] = useState<number>(3);
 
+  // Local storage helper key
+  const getStorageKey = () => `rutapyme_completed_${user?.id || 'guest'}_${courseSlug || 'lean-manufacturing'}`;
+
+  const loadCompletedMapFromStorage = (): Record<string, boolean> => {
+    try {
+      const stored = localStorage.getItem(getStorageKey());
+      return stored ? JSON.parse(stored) : {};
+    } catch {
+      return {};
+    }
+  };
+
+  const saveCompletedMapToStorage = (map: Record<string, boolean>) => {
+    try {
+      localStorage.setItem(getStorageKey(), JSON.stringify(map));
+    } catch (e) {
+      console.error('Error saving progress to localStorage:', e);
+    }
+  };
+
   const fetchLessonAndCourse = async () => {
+    // Read local progress first
+    const localCompletedMap = loadCompletedMapFromStorage();
+
     const targetFallback =
       FALLBACK_LESSONS.find((l) => l.slug === lessonSlug) || FALLBACK_LESSONS[0];
     setCurrentLesson(targetFallback);
 
     try {
+      // Fetch from Supabase
       const { data: courseData } = await (supabase.from('courses') as any)
         .select('*')
         .eq('slug', courseSlug || 'lean-manufacturing')
@@ -164,7 +188,8 @@ export const LessonPage: React.FC = () => {
             setCurrentLesson(target);
             setTotalCount(lessonsData.length);
 
-            let completedMap: Record<string, boolean> = {};
+            let completedMap: Record<string, boolean> = { ...localCompletedMap };
+
             if (user) {
               const { data: progressData } = await (supabase.from('user_lesson_progress') as any)
                 .select('lesson_id, completed')
@@ -172,23 +197,27 @@ export const LessonPage: React.FC = () => {
 
               if (progressData) {
                 progressData.forEach((p: any) => {
-                  completedMap[p.lesson_id] = p.completed;
+                  if (p.completed) {
+                    completedMap[p.lesson_id] = true;
+                  }
                 });
               }
             }
 
-            setIsLessonCompleted(!!completedMap[target.id]);
-            const doneLessons = Object.values(completedMap).filter(Boolean).length;
-            setCompletedCount(doneLessons);
+            const targetDone = !!(completedMap[target.id] || completedMap[target.slug]);
+            setIsLessonCompleted(targetDone);
 
-            const syl: SyllabusItem[] = lessonsData.map((l: LessonData) => ({
-              id: l.id,
-              title: l.title,
-              slug: l.slug,
-              type: l.video_url ? `Video • ${l.duration_minutes} min` : `Lectura • ${l.duration_minutes} min`,
-              completed: !!completedMap[l.id],
-              active: l.id === target.id,
-            }));
+            const syl: SyllabusItem[] = lessonsData.map((l: LessonData) => {
+              const isDone = !!(completedMap[l.id] || completedMap[l.slug]);
+              return {
+                id: l.id,
+                title: l.title,
+                slug: l.slug,
+                type: l.video_url ? `Video • ${l.duration_minutes} min` : `Lectura • ${l.duration_minutes} min`,
+                completed: isDone,
+                active: l.id === target.id,
+              };
+            });
 
             syl.push({
               id: 'quiz-module-1',
@@ -201,21 +230,31 @@ export const LessonPage: React.FC = () => {
             });
 
             setSyllabus(syl);
+            const doneCount = syl.filter((s) => s.completed).length;
+            setCompletedCount(doneCount);
             return;
           }
         }
       }
 
-      // Fallback behavior
+      // Fallback behavior if Supabase is empty
       setTotalCount(FALLBACK_LESSONS.length);
-      const fallbackSyl: SyllabusItem[] = FALLBACK_LESSONS.map((l) => ({
-        id: l.id,
-        title: l.title,
-        slug: l.slug,
-        type: `Lectura & Video • ${l.duration_minutes} min`,
-        completed: l.id === 'lesson-1',
-        active: l.slug === targetFallback.slug,
-      }));
+      let completedMap: Record<string, boolean> = { ...localCompletedMap };
+
+      const targetDone = !!(completedMap[targetFallback.id] || completedMap[targetFallback.slug]);
+      setIsLessonCompleted(targetDone);
+
+      const fallbackSyl: SyllabusItem[] = FALLBACK_LESSONS.map((l) => {
+        const isDone = !!(completedMap[l.id] || completedMap[l.slug]);
+        return {
+          id: l.id,
+          title: l.title,
+          slug: l.slug,
+          type: `Lectura & Video • ${l.duration_minutes} min`,
+          completed: isDone,
+          active: l.slug === targetFallback.slug,
+        };
+      });
 
       fallbackSyl.push({
         id: 'quiz-module-1',
@@ -228,7 +267,8 @@ export const LessonPage: React.FC = () => {
       });
 
       setSyllabus(fallbackSyl);
-      setIsLessonCompleted(targetFallback.id === 'lesson-1');
+      const doneCount = fallbackSyl.filter((s) => s.completed).length;
+      setCompletedCount(doneCount);
     } catch (err) {
       console.error('Error loading lesson page:', err);
     }
@@ -238,20 +278,39 @@ export const LessonPage: React.FC = () => {
     fetchLessonAndCourse();
   }, [courseSlug, lessonSlug, user]);
 
-  // Toggle "Mark as Completed" with reliable persistence
+  // Bulletproof Toggle completion persistence
   const handleToggleCompletion = async () => {
     if (!currentLesson) return;
     const newStatus = !isLessonCompleted;
     setIsLessonCompleted(newStatus);
 
-    // Update syllabus state immediately
-    setSyllabus((prev) =>
-      prev.map((item) => (item.id === currentLesson.id ? { ...item, completed: newStatus } : item))
-    );
+    // 1. Update localStorage immediately
+    const currentLocalMap = loadCompletedMapFromStorage();
+    if (newStatus) {
+      currentLocalMap[currentLesson.id] = true;
+      currentLocalMap[currentLesson.slug] = true;
+    } else {
+      delete currentLocalMap[currentLesson.id];
+      delete currentLocalMap[currentLesson.slug];
+    }
+    saveCompletedMapToStorage(currentLocalMap);
 
-    // Update counts
-    setCompletedCount((prev) => (newStatus ? prev + 1 : Math.max(0, prev - 1)));
+    // 2. Update syllabus state immediately
+    let newDoneCount = 0;
+    setSyllabus((prev) => {
+      const updated = prev.map((item) => {
+        if (item.id === currentLesson.id || item.slug === currentLesson.slug) {
+          return { ...item, completed: newStatus };
+        }
+        return item;
+      });
+      newDoneCount = updated.filter((s) => s.completed).length;
+      return updated;
+    });
 
+    setCompletedCount(newDoneCount);
+
+    // 3. Update Supabase table if authenticated and valid UUID
     if (user && !currentLesson.id.startsWith('lesson-')) {
       try {
         await (supabase.from('user_lesson_progress') as any).upsert({
@@ -261,7 +320,7 @@ export const LessonPage: React.FC = () => {
           completed_at: newStatus ? new Date().toISOString() : null,
         });
       } catch (err) {
-        console.error('Error toggling lesson completion in Supabase:', err);
+        console.error('Error updating lesson progress in Supabase:', err);
       }
     }
   };
@@ -292,7 +351,7 @@ export const LessonPage: React.FC = () => {
   const nextLesson =
     currentIndex >= 0 && currentIndex < syllabus.length - 1 ? syllabus[currentIndex + 1] : null;
 
-  const progressPercentage = Math.min(100, Math.round((completedCount / totalCount) * 100));
+  const progressPercentage = totalCount > 0 ? Math.min(100, Math.round((completedCount / totalCount) * 100)) : 0;
 
   const resourcesList =
     Array.isArray(currentLesson?.resources) && currentLesson.resources.length > 0
