@@ -27,6 +27,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl, title, durat
 
   // Extract YouTube ID if applicable
   const getEmbedUrl = (url: string) => {
+    if (url.endsWith('.mp4') || url.includes('.mp4?')) return url;
     if (url.includes('youtube.com/embed/')) return url;
     const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
     if (match && match[1]) {
@@ -36,11 +37,12 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl, title, durat
   };
 
   const embedUrl = getEmbedUrl(videoUrl);
+  const isDirectVideo = videoUrl.endsWith('.mp4') || videoUrl.includes('.mp4?');
 
   return (
     <div className="w-full aspect-video bg-slate-950 rounded-2xl overflow-hidden shadow-level-2 border border-outline-variant/20 relative group">
       {!isPlaying ? (
-        <div className="w-full h-full relative flex items-center justify-center bg-gradient-to-t from-slate-950/80 via-slate-900/40 to-slate-950/60 p-6">
+        <div className="w-full h-full relative flex items-center justify-center bg-gradient-to-t from-slate-950/90 via-slate-900/50 to-slate-950/70 p-6">
           <img
             src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80"
             alt={title}
@@ -57,7 +59,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl, title, durat
             </button>
 
             <div>
-              <span className="px-3 py-1 bg-surface-container-lowest/80 backdrop-blur-md rounded-full text-[11px] font-semibold text-primary border border-outline-variant/30 mb-2 inline-block">
+              <span className="px-3 py-1 bg-surface-container-lowest/90 backdrop-blur-md rounded-full text-[11px] font-semibold text-primary border border-outline-variant/30 mb-2 inline-block">
                 Clase Audiovisual • {durationMinutes} min
               </span>
               <h3 className="font-headline text-lg font-bold text-white leading-snug drop-shadow-sm">
@@ -66,14 +68,34 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoUrl, title, durat
             </div>
           </div>
         </div>
-      ) : (
-        <iframe
-          className="w-full h-full"
+      ) : isDirectVideo ? (
+        <video
           src={embedUrl}
-          title={title}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        ></iframe>
+          controls
+          autoPlay
+          className="w-full h-full object-cover"
+        />
+      ) : (
+        <div className="w-full h-full relative">
+          <iframe
+            className="w-full h-full"
+            src={embedUrl}
+            title={title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+          <div className="absolute top-3 right-3 z-20">
+            <a
+              href={videoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-1.5 bg-slate-900/80 hover:bg-slate-900 backdrop-blur-md text-white font-semibold text-[11px] rounded-lg border border-white/20 flex items-center gap-1 transition-colors"
+            >
+              <span>Ver en YouTube</span>
+              <span className="material-symbols-outlined text-xs">open_in_new</span>
+            </a>
+          </div>
+        </div>
       )}
     </div>
   );

@@ -29,7 +29,7 @@ interface SyllabusItem {
   isQuiz?: boolean;
 }
 
-// Course-specific distinct fallback content
+// Course-specific distinct fallback content with rich text & solid videos
 const COURSE_FALLBACKS: Record<string, { title: string; moduleTitle: string; lessons: LessonData[] }> = {
   'lean-manufacturing': {
     title: 'Fundamentos de Lean Manufacturing & Eliminación de Desperdicios',
@@ -42,24 +42,41 @@ const COURSE_FALLBACKS: Record<string, { title: string; moduleTitle: string; les
         slug: 'introduccion',
         video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
         content_markdown: `
-## Bloque 1: Filosofía Lean y los 8 Desperdicios (Muda)
+# Guía Maestra: Filosofía Lean y los 8 Desperdicios (Muda)
 
-### Lectura Conceptual
-**Lean Manufacturing** es una filosofía de gestión originada en el Sistema de Producción Toyota (TPS). Su propósito central es **maximizar el valor entregado al cliente final eliminando sistemáticamente el desperdicio (*Muda*)**.
+## 📌 Introducción y Principios Fundamentales
+La filosofía **Lean Manufacturing** nació en Japón dentro del Sistema de Producción Toyota (TPS) con un propósito inequívoco: **entregar la máxima calidad al cliente en el menor tiempo posible, eliminando todo aquello que consuma recursos sin agregar valor real.**
 
-#### Los 8 Desperdicios Clásicos (TIMWOODS)
-1. **Transporte:** Mover materiales sin agregar valor.
-2. **Inventario:** Acumulación excesiva de materia prima o producto terminado.
-3. **Movimiento:** Desplazamientos innecesarios del personal.
-4. **Esperas:** Tiempos muertos esperando materiales o autorizaciones.
-5. **Sobreproducción:** Fabricar más o antes de lo requerido (el peor desperdicio).
-6. **Sobreprocesamiento:** Pasos adicionales no exigidos por el cliente.
-7. **Defectos:** Errores o descartes que consumen horas y material.
-8. **Talento No Aprovechado:** No escuchar las ideas del equipo.
+---
+
+## 🎯 ¿Qué es el Valor Agregado vs Desperdicio?
+* **Valor Agregado (VA):** Es toda actividad que transforma físicamente el producto o servicio y por la cual el cliente final está genuinamente dispuesto a pagar.
+* **Desperdicio (*Muda*):** Cualquier tarea, movimiento, tiempo muerto o recurso consumido que no incrementa el valor percibido por el cliente.
+
+---
+
+## 🔍 Los 8 Desperdicios Clásicos en PYMEs (Metodología TIMWOODS)
+
+1. **🚚 Transporte Innecesario:** Trasladar cajas, materia prima o carpetas de un piso a otro sin transformar el producto.
+2. **📦 Inventario Excesivo:** Materia prima paralizada o producto terminado guardado en almacén que congela el capital de trabajo.
+3. **🏃 Movimiento Innecesario:** Colaboradores caminando largas distancias para buscar herramientas o folletos.
+4. **⏳ Tiempos de Espera:** Empleados o máquinas paralizadas esperando firmas de aprobación o llegada de suministros.
+5. **📈 Sobreproducción (El Peor Desperdicio):** Fabricar más de lo demandado o antes de tiempo. Genera todos los demás desperdicios.
+6. **⚙️ Sobreprocesamiento:** Agregar acabados, empaques o pasos complejos que el cliente no solicitó ni valora.
+7. **❌ Defectos y Reprocesos:** Artículos mal confeccionados o errores en presupuestos que requieren horas de corrección.
+8. **💡 Talento No Aprovechado:** No escuchar las ideas de mejora continua de los colaboradores que ejecutan la tarea diaria.
+
+---
+
+## 🛠️ Plan de Acción Inmediato para tu Empresa
+* **Paso 1:** Camina por tu taller o negocio con ojos Lean (Gemba Walk).
+* **Paso 2:** Identifica los 2 desperdicios más graves de tu operación diaria.
+* **Paso 3:** Cuantifica el tiempo o dinero que pierdes mensualmente por ellos y diseña un plan de choque.
         `,
-        duration_minutes: 8,
+        duration_minutes: 12,
         resources: [
-          { title: 'Matriz TIMWOODS en PDF', size: '1.4 MB', type: 'PDF' },
+          { title: 'Matriz de Diagnóstico TIMWOODS (PDF)', size: '1.4 MB', type: 'PDF' },
+          { title: 'Hoja de Registro Gemba Walk (Excel)', size: '650 KB', type: 'XLSX' },
         ],
         order_index: 1,
       },
@@ -68,20 +85,39 @@ const COURSE_FALLBACKS: Record<string, { title: string; moduleTitle: string; les
         module_id: 'mod-lean',
         title: '2. Estabilidad Operativa y Metodología 5S',
         slug: 'estabilidad-operativa-5s',
-        video_url: 'https://www.youtube-nocookie.com/embed/J73JpG_8C9s',
+        video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
         content_markdown: `
-## Bloque 2: Estabilidad Operativa y Metodología 5S
+# Guía Maestra: Metodología 5S y Estandarización Visual
 
-La metodología **5S** es una técnica de **gestión visual y estandarización del puesto de trabajo**.
+## 📌 ¿Por qué implementar 5S en tu Negocio?
+La metodología **5S** no es un simple programa de aseo; es un **sistema de gestión visual y estandarización operativa** diseñado para que cualquier anomalía, falta de insumo o falla en el proceso sea evidente a simple vista en menos de 5 segundos.
 
-1. **Seiri (Clasificar):** Separar lo necesario de lo innecesario.
-2. **Seiton (Ordenar):** Un lugar para cada cosa.
-3. **Seiso (Limpiar):** Limpiar e inspeccionar.
-4. **Seiketsu (Estandarizar):** Establecer normas visuales.
-5. **Shitsuke (Disciplina):** Fomentar el hábito de la mejora continua.
+---
+
+## 📋 Las 5 Etapas del Sistema
+
+### 1️⃣ Seiri (Clasificar / Descartar)
+* **Objetivo:** Separar lo útil de lo inútil en la zona de trabajo.
+* **Acción:** Aplica la "Tarjeta Roja" a todo objeto que no se haya usado en los últimos 30 días.
+
+### 2️⃣ Seiton (Ordenar / Organizar)
+* **Objetivo:** *Un lugar para cada cosa y cada cosa en su lugar.*
+* **Acción:** Define ubicaciones fijas con etiquetas, códigos de colores o siluetas marcadas.
+
+### 3️⃣ Seiso (Limpiar e Inspeccionar)
+* **Objetivo:** La limpieza es inspección. Detectar fugas de aceite, desgaste de cables o acumulación de polvo antes de que causen averías.
+
+### 4️⃣ Seiketsu (Estandarizar)
+* **Objetivo:** Crear instructivos visuales y listas de cotejo diarias para mantener los primeros 3 pasos.
+
+### 5️⃣ Shitsuke (Disciplina y Hábito)
+* **Objetivo:** Convertir la metodología en una cultura colectiva mediante auditorías periódicas y reconocimientos al equipo.
         `,
-        duration_minutes: 10,
-        resources: [{ title: 'Plantilla Auditoría 5S Excel', size: '2.1 MB', type: 'XLSX' }],
+        duration_minutes: 15,
+        resources: [
+          { title: 'Plantilla de Auditoría 5S para PYMEs', size: '2.1 MB', type: 'XLSX' },
+          { title: 'Formulario de Tarjeta Roja (PDF)', size: '450 KB', type: 'PDF' },
+        ],
         order_index: 2,
       },
       {
@@ -89,15 +125,32 @@ La metodología **5S** es una técnica de **gestión visual y estandarización d
         module_id: 'mod-lean',
         title: '3. Flujo Continuo, Takt Time y Sistemas Pull',
         slug: 'flujo-continuo-takt-time',
-        video_url: 'https://www.youtube-nocookie.com/embed/gL2u-m2c858',
+        video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
         content_markdown: `
-## Bloque 3: Flujo Continuo y Takt Time
+# Guía Maestra: Flujo Continuo y Takt Time
 
-- **Takt Time:** Ritmo al que el cliente compra el producto.
-- **Sistema Pull:** Producir únicamente ante la demanda del cliente.
+## ⏱️ ¿Qué es el Takt Time?
+El **Takt Time** es el ritmo o "latido del corazón" al que tu empresa debe producir para satisfacer exactamente la demanda del cliente sin generar sobreproducción ni desabastecimiento.
+
+**Takt Time = Tiempo Operativo Disponible / Demanda del Cliente**
+
+---
+
+## 🔄 Sistema Pull vs Push
+* **Sistema Push (Empujar):** Fabricar basándose en estimaciones o intuición. Produce inventario ocioso y cuellos de botella.
+* **Sistema Pull (Jalar / Kanban):** Producir únicamente cuando el cliente final o la siguiente estación solicita una unidad.
+
+---
+
+## 💡 Beneficios de Reducir el Lead Time
+1. Menos capital atado en inventarios.
+2. Entregas 3 veces más rápidas al cliente.
+3. Detección inmediata de piezas defectuosas.
         `,
-        duration_minutes: 12,
-        resources: [{ title: 'Calculadora de Takt Time', size: '980 KB', type: 'XLSX' }],
+        duration_minutes: 15,
+        resources: [
+          { title: 'Calculadora de Takt Time & Tiempo de Ciclo', size: '980 KB', type: 'XLSX' },
+        ],
         order_index: 3,
       },
     ],
@@ -111,52 +164,81 @@ La metodología **5S** es una técnica de **gestión visual y estandarización d
         module_id: 'mod-caja',
         title: '1. Importancia del Flujo de Caja en PYMEs',
         slug: 'introduccion',
-        video_url: 'https://www.youtube-nocookie.com/embed/pQ3hN3S8T-s',
+        video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
         content_markdown: `
-## Bloque 1: Estructura del Flujo de Caja
+# Guía Maestra: Fundamentos de Flujo de Caja para Microempresas
 
-### Lectura Conceptual
-El **Flujo de Caja** es el indicador real de supervivencia en un microemprendimiento. A diferencia de las ventas totales, mide el dinero líquido disponible para responder a las obligaciones operativas de corto plazo.
+## 💡 El Mito de las Ventas vs La Realidad de la Caja
+Muchos emprendedores quiebran teniendo ventas récord. ¿Por qué ocurre esto? Porque **la utilidad contable es una estimación teórica, pero el Flujo de Caja es el dinero líquido real disponible en tu cuenta para pagar la nómina y los proveedores mañana.**
 
-#### Componentes Fundamentales
-1. **Ingresos Operativos:** Cobros reales por ventas y servicios.
-2. **Egresos Operativos:** Pagos a proveedores, nómina y servicios básicos.
-3. **Flujo Neto:** Diferencia entre entradas y salidas líquidas.
+---
+
+## 📊 Estructura Básica del Estado de Flujo de Caja
+
+1. **Entradas Operativas (+):** Cobros efectivos de clientes por ventas al contado y recuperación de facturas a crédito.
+2. **Salidas Operativas (-):** Compras de insumos, pago de salarios, alquileres, servicios y transporte.
+3. **Flujo Neto de Caja (=):** La diferencia resultante. Si es negativo durante 2 meses consecutivos, el negocio entra en zona de riesgo crítico.
+
+---
+
+## 🚀 3 Reglas de Oro para Proteger tu Liquidez
+* **Regla 1:** Cobra rápido y negocia plazos de pago más amplios con tus proveedores.
+* **Regla 2:** Separa tajantemente las finanzas personales de las finanzas del negocio (asígnate un sueldo fijo).
+* **Regla 3:** Revisa tu saldo de caja semanalmente, no al final del mes.
         `,
-        duration_minutes: 10,
+        duration_minutes: 14,
         resources: [
-          { title: 'Plantilla de Flujo de Caja Semanal (Excel)', size: '1.8 MB', type: 'XLSX' },
+          { title: 'Plantilla de Flujo de Caja Semanal en Excel', size: '1.8 MB', type: 'XLSX' },
         ],
         order_index: 1,
       },
       {
         id: 'caja-2',
         module_id: 'mod-caja',
-        title: '2. Proyección de Ingresos y Egresos Operativos',
+        title: '2. Proyección de Ingresos y Egresos a 90 Días',
         slug: 'proyeccion-financiera',
-        video_url: 'https://www.youtube-nocookie.com/embed/Q0PZ-G3YtT8',
+        video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
         content_markdown: `
-## Bloque 2: Proyección Financiera a 90 Días
+# Guía Maestra: Proyección Financiera a 90 Días
 
-Aprende a anticipar déficits de liquidez proyectando tus cobros futuros a 30, 60 y 90 días para tomar decisiones oportunas de financiamiento.
+## 📈 ¿Por qué proyectar a 90 días?
+Un presupuesto de caja a 90 días te permite ver los baches o huecos de liquidez **antes de que sucedan**, dándote tiempo para negociar con proveedores o impulsar ofertas de cobro anticipado.
+
+---
+
+## 🛠️ Pasos para Construir tu Presupuesto Móvil
+1. **Listar Gastos Fijos Inamovibles:** Alquiler, nómina base, energía, internet.
+2. **Estimar Cobros Reales a Crédito:** Ajusta por el porcentaje de morosidad histórico de tus clientes.
+3. **Establecer un Fondo de Emergencia:** Equivalente a mínimo 1 mes de costos fijos.
         `,
-        duration_minutes: 15,
-        resources: [{ title: 'Guía de Proyección Financiera PDF', size: '1.1 MB', type: 'PDF' }],
+        duration_minutes: 16,
+        resources: [
+          { title: 'Guía de Proyección Financiera (PDF)', size: '1.1 MB', type: 'PDF' },
+        ],
         order_index: 2,
       },
       {
         id: 'caja-3',
         module_id: 'mod-caja',
-        title: '3. Preparación Fiscal y Obligaciones Tributarias',
+        title: '3. Preparación Fiscal y Reserva Tributaria',
         slug: 'impuestos-pyme',
-        video_url: 'https://www.youtube-nocookie.com/embed/H0p6-W-zJ10',
+        video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
         content_markdown: `
-## Bloque 3: Gestión de Impuestos
+# Guía Maestra: Estrategia de Reserva Tributaria para PYMEs
 
-Organiza tus reservas mensuales para cubrir obligaciones tributarias (ISV, ISR) sin afectar la operación diaria.
+## 🏛️ Evita Sorpresas Fiscales
+Uno de los errores más comunes en microempresas es utilizar el dinero retenido por impuestos (como el ISV/IVA recaudado) para pagar gastos operativos del día a día.
+
+---
+
+## 💡 La Estrategia del 15% Automático
+* Cada vez que recibas un pago de un cliente, transfiere inmediatamente el **15% del valor retenido** a una cuenta bancaria secundaria o sub-cuenta de ahorro.
+* Al llegar la fecha de declaración trimestral o anual, tendrás el dinero 100% disponible sin recurrir a préstamos de emergencia.
         `,
         duration_minutes: 12,
-        resources: [{ title: 'Calendario Fiscal PYME', size: '750 KB', type: 'PDF' }],
+        resources: [
+          { title: 'Calendario Fiscal & Plantilla de Ahorro Tributario', size: '750 KB', type: 'PDF' },
+        ],
         order_index: 3,
       },
     ],
@@ -170,16 +252,24 @@ Organiza tus reservas mensuales para cubrir obligaciones tributarias (ISV, ISR) 
         module_id: 'mod-mkt',
         title: '1. Definición del Cliente Ideal (Buyer Persona)',
         slug: 'introduccion',
-        video_url: 'https://www.youtube-nocookie.com/embed/8w40bW_x23k',
+        video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
         content_markdown: `
-## Bloque 1: Conoce a tu Cliente Ideal
+# Guía Maestra: Definición del Buyer Persona para PYMEs
 
-### Lectura Conceptual
-Antes de invertir en publicidad digital, debes definir con precisión a tu **Buyer Persona**: hábitos, problemas principales, canales de comunicación preferidos y presupuesto disponible.
+## 🎯 ¿Por qué definir a tu Cliente Ideal?
+Publicitar "para todo el mundo" es la forma más rápida de desperdiciar tu presupuesto de marketing. El **Buyer Persona** es una representación semi-ficticia de tu cliente ideal basada en datos reales de tus compradores actuales.
+
+---
+
+## 📋 Los 4 Pilares del Perfil de Cliente
+1. **Datos Demográficos:** Edad, ubicación, nivel educativo y ocupación.
+2. **Puntos de Dolor (*Pain Points*):** ¿Qué problema urgente o frustración busca resolver tu cliente?
+3. **Hábitos Digitales:** ¿Utiliza WhatsApp, Instagram, TikTok o Facebook para informarse?
+4. **Propuesta de Valor Personalizada:** ¿Por qué tu producto/servicio es superior a las alternativas del mercado?
         `,
-        duration_minutes: 9,
+        duration_minutes: 12,
         resources: [
-          { title: 'Plantilla de Definición Buyer Persona (PDF)', size: '1.2 MB', type: 'PDF' },
+          { title: 'Plantilla Práctica de Buyer Persona (PDF)', size: '1.2 MB', type: 'PDF' },
         ],
         order_index: 1,
       },
@@ -188,14 +278,25 @@ Antes de invertir en publicidad digital, debes definir con precisión a tu **Buy
         module_id: 'mod-mkt',
         title: '2. Redes Sociales y Contenido de Valor',
         slug: 'estrategia-contenido',
-        video_url: 'https://www.youtube-nocookie.com/embed/n4p-L4P5a8s',
+        video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
         content_markdown: `
-## Bloque 2: Creación de Contenido de Valor
+# Guía Maestra: Creación de Contenido de Valor y Redes Sociales
 
-Crea una parrilla de contenidos balanceada: 70% educativo/entretenimiento y 30% promocional.
+## 📱 La Regla del 70/30 en Contenidos
+* **70% Contenido Educativo e Inspiracional:** Consejos, tutoriales de uso, detrás de cámaras e historias de éxito de clientes.
+* **30% Oferta Directa de Venta:** Promociones, llamados a la acción (CTA) e invitaciones de compra directas.
+
+---
+
+## 🎬 Estructura de un Video Corto (Reel / TikTok) Exitoso
+1. **Gancho (Primeros 3 segundos):** Una pregunta intrigante o afirmación impactante.
+2. **Desarrollo del Consejo (15-30 segundos):** Explicación clara y sin rodeos.
+3. **Llamado a la Acción (CTA final):** *"Comenta la palabra 'APRENDE' para recibir más información por DM"*.
         `,
-        duration_minutes: 11,
-        resources: [{ title: 'Calendario de Contenidos para Redes Sociales', size: '1.5 MB', type: 'XLSX' }],
+        duration_minutes: 15,
+        resources: [
+          { title: 'Calendario de Contenidos para Redes Sociales', size: '1.5 MB', type: 'XLSX' },
+        ],
         order_index: 2,
       },
       {
@@ -203,14 +304,24 @@ Crea una parrilla de contenidos balanceada: 70% educativo/entretenimiento y 30% 
         module_id: 'mod-mkt',
         title: '3. Estrategias de Retención y Fidelización',
         slug: 'fidelizacion',
-        video_url: 'https://www.youtube-nocookie.com/embed/T60sP_6vY40',
+        video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
         content_markdown: `
-## Bloque 3: Fidelización y Valor del Cliente
+# Guía Maestra: Retención y Ventas por WhatsApp Business
 
-Es 5 veces más económico venderle a un cliente recurrente que adquirir uno nuevo. Diseña programas de lealtad sencillos por WhatsApp o correo.
+## 💬 El Poder de WhatsApp Business para PYMEs
+Conseguir un cliente nuevo cuesta 5 veces más que venderle nuevamente a un cliente satisfecho. WhatsApp Business es el canal con mayor tasa de apertura (+90%) para cerrar ventas repetidas.
+
+---
+
+## 🛠️ Herramientas Clave a Configurar
+1. **Respuestas Rápidas (\`/precio\`, \`/horario\`):** Ahorra horas de tipeo respondiendo dudas frecuentes en segundos.
+2. **Etiquetas de Clientes:** Organiza a tus contactos en *"Nuevo Cliente"*, *"Pedido Pendiente"*, *"Cliente VIP"*.
+3. **Catálogo Digital:** Muestra tus productos directamente en el perfil sin enviar imágenes pesadas.
         `,
         duration_minutes: 14,
-        resources: [{ title: 'Guía de Fidelización por WhatsApp', size: '890 KB', type: 'PDF' }],
+        resources: [
+          { title: 'Guía de Configuración WhatsApp Business (PDF)', size: '890 KB', type: 'PDF' },
+        ],
         order_index: 3,
       },
     ],
@@ -561,7 +672,7 @@ export const LessonPage: React.FC = () => {
             <article className="bg-surface-container-lowest rounded-2xl shadow-level-1 p-6 md:p-10 border border-outline-variant/20 space-y-6">
               <div className="flex items-center justify-between text-xs text-on-surface-variant pb-4 border-b border-outline-variant/30">
                 <span className="flex items-center gap-1 font-medium">
-                  <span className="material-symbols-outlined text-base">schedule</span> {currentLesson?.duration_minutes || 10} min de lectura
+                  <span className="material-symbols-outlined text-base">schedule</span> {currentLesson?.duration_minutes || 12} min de lectura
                 </span>
                 <span className="flex items-center gap-1 font-medium">
                   <span className="material-symbols-outlined text-base">person</span> Prof. Carlos Mendoza
