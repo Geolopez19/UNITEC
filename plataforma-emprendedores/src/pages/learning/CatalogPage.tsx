@@ -5,6 +5,7 @@ import { CourseEditorModal } from '../../components/learning/CourseEditorModal';
 import { useAuth } from '../../context/AuthContext';
 import { supabase } from '../../lib/supabaseClient';
 import { seedLearningData } from '../../lib/seedLearningData';
+import { calculateCourseProgress } from '../../utils/progress';
 
 interface CourseItem {
   id: string;
@@ -28,24 +29,6 @@ export const CatalogPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  // Read real progress calculation matching LessonPage store
-  const getCourseProgress = (courseSlug: string): number => {
-    try {
-      const storageKey = `rutapyme_completed_${user?.id || 'guest'}_${courseSlug}`;
-      const stored = localStorage.getItem(storageKey);
-      if (stored) {
-        const map = JSON.parse(stored);
-        const doneCount = Object.values(map).filter(Boolean).length;
-        // Total lessons estimate: 3
-        const total = 3;
-        return Math.min(100, Math.round((doneCount / total) * 100));
-      }
-    } catch (e) {
-      console.error(e);
-    }
-    return 0;
-  };
-
   const sampleCourses: CourseItem[] = [
     {
       id: 'course-1',
@@ -57,7 +40,7 @@ export const CatalogPage: React.FC = () => {
       category: 'Estrategia',
       duration_label: '4h 30m',
       total_lessons: 3,
-      progress_percentage: getCourseProgress('lean-manufacturing'),
+      progress_percentage: calculateCourseProgress(user, 'lean-manufacturing', 3),
       rating: 4.9,
     },
     {
@@ -70,7 +53,7 @@ export const CatalogPage: React.FC = () => {
       category: 'Finanzas',
       duration_label: '3h 15m',
       total_lessons: 8,
-      progress_percentage: getCourseProgress('flujo-de-caja'),
+      progress_percentage: calculateCourseProgress(user, 'flujo-de-caja', 8),
       rating: 4.8,
     },
     {
@@ -83,7 +66,7 @@ export const CatalogPage: React.FC = () => {
       category: 'Marketing',
       duration_label: '5h 00m',
       total_lessons: 12,
-      progress_percentage: getCourseProgress('marketing-digital'),
+      progress_percentage: calculateCourseProgress(user, 'marketing-digital', 12),
       rating: 4.7,
     },
   ];
@@ -110,7 +93,7 @@ export const CatalogPage: React.FC = () => {
           category: c.level_required === 1 ? 'Estrategia' : c.level_required === 2 ? 'Finanzas' : 'Marketing',
           duration_label: '4h 00m',
           total_lessons: 3,
-          progress_percentage: getCourseProgress(c.slug),
+          progress_percentage: calculateCourseProgress(user, c.slug, 3),
           rating: 4.9,
         }));
         setCourses(mapped);
