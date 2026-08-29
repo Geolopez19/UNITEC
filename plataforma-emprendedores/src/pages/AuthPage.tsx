@@ -17,12 +17,12 @@ export const AuthPage: React.FC = () => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
-  // Helper with 5-second timeout limit to prevent infinite loading
-  const withTimeout = <T,>(promise: Promise<T>, ms = 5000): Promise<T> => {
+  // 12-second timeout guard to allow Supabase free-tier cold starts
+  const withTimeout = <T,>(promise: Promise<T>, ms = 12000): Promise<T> => {
     return Promise.race([
       promise,
       new Promise<T>((_, reject) =>
-        setTimeout(() => reject(new Error('La conexión tardó demasiado. Revisa tu red o confirma tu correo.')), ms)
+        setTimeout(() => reject(new Error('La conexión tardó demasiado. Por favor verifica tus credenciales o el estado de tu red.')), ms)
       ),
     ]);
   };
@@ -81,11 +81,10 @@ export const AuthPage: React.FC = () => {
               'Debes confirmar tu correo electrónico antes de iniciar sesión. Por favor revisa tu bandeja de entrada.'
             );
           } else {
-            setErrorMsg('Credenciales inválidas o correo no confirmado en Supabase.');
+            setErrorMsg('Credenciales inválidas o correo no registrado.');
           }
           setLoading(false);
         } else {
-          // Immediate navigation without blocking
           setLoading(false);
           navigate('/dashboard');
         }
