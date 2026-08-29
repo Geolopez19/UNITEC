@@ -9,6 +9,7 @@ import { QuizPage } from '../pages/learning/QuizPage';
 import { InventoryPage } from '../pages/inventory/InventoryPage';
 import { SalesPage } from '../pages/sales/SalesPage';
 import { ReportsPage } from '../pages/reports/ReportsPage';
+import { CustomersPage } from '../pages/customers/CustomersPage';
 import { ProtectedRoute } from '../components/auth/ProtectedRoute';
 
 export const AppRoutes: React.FC = () => {
@@ -58,6 +59,16 @@ export const AppRoutes: React.FC = () => {
         element={
           <ProtectedRoute requireDiagnostic={true}>
             <ReportsPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Customers & CRM Module Route */}
+      <Route
+        path="/clientes"
+        element={
+          <ProtectedRoute requireDiagnostic={true}>
+            <CustomersPage />
           </ProtectedRoute>
         }
       />
