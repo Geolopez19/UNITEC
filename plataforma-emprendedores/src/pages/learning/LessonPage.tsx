@@ -68,7 +68,7 @@ const COURSE_FALLBACKS: Record<string, { title: string; moduleTitle: string; les
         module_id: 'mod-lean',
         title: '2. Estabilidad Operativa y Metodología 5S',
         slug: 'estabilidad-operativa-5s',
-        video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
+        video_url: 'https://www.youtube-nocookie.com/embed/J73JpG_8C9s',
         content_markdown: `
 ## Bloque 2: Estabilidad Operativa y Metodología 5S
 
@@ -89,7 +89,7 @@ La metodología **5S** es una técnica de **gestión visual y estandarización d
         module_id: 'mod-lean',
         title: '3. Flujo Continuo, Takt Time y Sistemas Pull',
         slug: 'flujo-continuo-takt-time',
-        video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
+        video_url: 'https://www.youtube-nocookie.com/embed/gL2u-m2c858',
         content_markdown: `
 ## Bloque 3: Flujo Continuo y Takt Time
 
@@ -111,7 +111,7 @@ La metodología **5S** es una técnica de **gestión visual y estandarización d
         module_id: 'mod-caja',
         title: '1. Importancia del Flujo de Caja en PYMEs',
         slug: 'introduccion',
-        video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
+        video_url: 'https://www.youtube-nocookie.com/embed/pQ3hN3S8T-s',
         content_markdown: `
 ## Bloque 1: Estructura del Flujo de Caja
 
@@ -134,7 +134,7 @@ El **Flujo de Caja** es el indicador real de supervivencia en un microemprendimi
         module_id: 'mod-caja',
         title: '2. Proyección de Ingresos y Egresos Operativos',
         slug: 'proyeccion-financiera',
-        video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
+        video_url: 'https://www.youtube-nocookie.com/embed/Q0PZ-G3YtT8',
         content_markdown: `
 ## Bloque 2: Proyección Financiera a 90 Días
 
@@ -149,7 +149,7 @@ Aprende a anticipar déficits de liquidez proyectando tus cobros futuros a 30, 6
         module_id: 'mod-caja',
         title: '3. Preparación Fiscal y Obligaciones Tributarias',
         slug: 'impuestos-pyme',
-        video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
+        video_url: 'https://www.youtube-nocookie.com/embed/H0p6-W-zJ10',
         content_markdown: `
 ## Bloque 3: Gestión de Impuestos
 
@@ -170,7 +170,7 @@ Organiza tus reservas mensuales para cubrir obligaciones tributarias (ISV, ISR) 
         module_id: 'mod-mkt',
         title: '1. Definición del Cliente Ideal (Buyer Persona)',
         slug: 'introduccion',
-        video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
+        video_url: 'https://www.youtube-nocookie.com/embed/8w40bW_x23k',
         content_markdown: `
 ## Bloque 1: Conoce a tu Cliente Ideal
 
@@ -188,7 +188,7 @@ Antes de invertir en publicidad digital, debes definir con precisión a tu **Buy
         module_id: 'mod-mkt',
         title: '2. Redes Sociales y Contenido de Valor',
         slug: 'estrategia-contenido',
-        video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
+        video_url: 'https://www.youtube-nocookie.com/embed/n4p-L4P5a8s',
         content_markdown: `
 ## Bloque 2: Creación de Contenido de Valor
 
@@ -203,7 +203,7 @@ Crea una parrilla de contenidos balanceada: 70% educativo/entretenimiento y 30% 
         module_id: 'mod-mkt',
         title: '3. Estrategias de Retención y Fidelización',
         slug: 'fidelizacion',
-        video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
+        video_url: 'https://www.youtube-nocookie.com/embed/T60sP_6vY40',
         content_markdown: `
 ## Bloque 3: Fidelización y Valor del Cliente
 
