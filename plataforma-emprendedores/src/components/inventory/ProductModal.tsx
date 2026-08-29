@@ -155,7 +155,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block font-bold text-on-surface mb-1">Precio de Costo ($)</label>
+              <label className="block font-bold text-on-surface mb-1">Precio de Costo (C$)</label>
               <input
                 type="number"
                 min={0}
@@ -167,7 +167,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
               />
             </div>
             <div>
-              <label className="block font-bold text-on-surface mb-1">Precio de Venta ($)</label>
+              <label className="block font-bold text-on-surface mb-1">Precio de Venta (C$)</label>
               <input
                 type="number"
                 min={0}

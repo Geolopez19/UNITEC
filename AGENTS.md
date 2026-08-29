@@ -21,6 +21,10 @@ Plataforma web para gestión y aceleración de microemprendedores (React 19 + Ty
   - [`src/components/learning/VideoPlayer.tsx`](file:///c:/Proyecto%20Personales/UNITEC/plataforma-emprendedores/src/components/learning/VideoPlayer.tsx): Reproductor de video privado con poster interactivo libre de anuncios.
   - [`src/components/learning/LessonEditorModal.tsx`](file:///c:/Proyecto%20Personales/UNITEC/plataforma-emprendedores/src/components/learning/LessonEditorModal.tsx): Editor por pestañas para instructores con previsualización en vivo.
   - [`src/pages/learning/QuizPage.tsx`](file:///c:/Proyecto%20Personales/UNITEC/plataforma-emprendedores/src/pages/learning/QuizPage.tsx): Evaluaciones interactivas.
+- **Módulo de Gestión de Inventario:**
+  - [`src/pages/inventory/InventoryPage.tsx`](file:///c:/Proyecto%20Personales/UNITEC/plataforma-emprendedores/src/pages/inventory/InventoryPage.tsx): Vista principal basada en [`diseno/inventario.html`](file:///c:/Proyecto%20Personales/UNITEC/diseno/inventario.html) con tarjetas KPI, tabla con barras de nivel y filtros por categoría.
+  - [`src/components/inventory/ProductModal.tsx`](file:///c:/Proyecto%20Personales/UNITEC/plataforma-emprendedores/src/components/inventory/ProductModal.tsx): Modal CRUD para agregar y editar productos.
+  - [`src/components/inventory/StockMovementModal.tsx`](file:///c:/Proyecto%20Personales/UNITEC/plataforma-emprendedores/src/components/inventory/StockMovementModal.tsx): Modal para reabastecimiento (entradas/salidas) conectado a `inventory_movements`.
 
 ## Reglas de Trabajo
 - Las maquetas y diseños de referencia residen en `./diseno/`. Solo se implementará el diseño visual cuando el usuario indique expresamente la ruta del archivo correspondiente en `diseno/`.

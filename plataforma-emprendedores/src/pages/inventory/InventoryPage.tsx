@@ -4,6 +4,7 @@ import { ProductModal } from '../../components/inventory/ProductModal';
 import { StockMovementModal } from '../../components/inventory/StockMovementModal';
 import { useAuth } from '../../context/AuthContext';
 import { supabase } from '../../lib/supabaseClient';
+import { formatCurrency } from '../../utils/currency';
 
 interface InventoryItem {
   id: string;
@@ -176,7 +177,7 @@ export const InventoryPage: React.FC = () => {
               payments
             </span>
           </div>
-          <p className="font-headline text-3xl font-bold text-on-surface">${totalValue.toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+          <p className="font-headline text-3xl font-bold text-on-surface">{formatCurrency(totalValue)}</p>
           <div className="mt-2 flex items-center text-tertiary font-bold text-xs">
             <span className="material-symbols-outlined text-sm">trending_up</span>
             <span className="ml-1">+5.2% valor proyectado</span>
@@ -258,14 +259,14 @@ export const InventoryPage: React.FC = () => {
                           </div>
                           <div>
                             <p className="font-bold text-on-surface">{item.name}</p>
-                            <p className="text-on-surface-variant text-[11px]">Costo: ${item.cost_price.toFixed(2)}</p>
+                            <p className="text-on-surface-variant text-[11px]">Costo: {formatCurrency(item.cost_price)}</p>
                           </div>
                         </div>
                       </td>
 
                       <td className="py-4 px-6 font-semibold">{item.category}</td>
                       <td className="py-4 px-6 text-on-surface-variant font-mono">{item.sku}</td>
-                      <td className="py-4 px-6 text-right font-bold text-sm">${item.selling_price.toFixed(2)}</td>
+                      <td className="py-4 px-6 text-right font-bold text-sm">{formatCurrency(item.selling_price)}</td>
 
                       <td className="py-4 px-6 min-w-[180px]">
                         <div className="flex flex-col gap-1">

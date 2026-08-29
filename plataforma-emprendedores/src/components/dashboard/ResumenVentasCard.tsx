@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatCurrency } from '../../utils/currency';
 
 interface ResumenVentasCardProps {
   totalSales?: number;
@@ -26,8 +27,8 @@ export const ResumenVentasCard: React.FC<ResumenVentasCardProps> = ({
       </h4>
 
       <div className="mb-4">
-        <div className="font-headline text-3xl font-bold text-on-surface">
-          ${totalSales.toLocaleString('en-US')}
+        <div className="font-headline font-bold text-on-surface text-2xl md:text-3xl">
+          {formatCurrency(totalSales)}
         </div>
         <div className="text-xs font-semibold text-tertiary flex items-center gap-1 mt-1">
           <span className="material-symbols-outlined text-sm">arrow_upward</span>
