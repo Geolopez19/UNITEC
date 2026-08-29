@@ -50,7 +50,7 @@ export async function seedLearningData() {
       {
         module_id: newModule.id,
         title: '1. Filosofía Lean y los 8 Desperdicios (Muda)',
-        slug: 'filosofia-lean-8-desperdicios',
+        slug: 'introduccion',
         video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
         content_markdown: `
 ## Bloque 1: Filosofía Lean y los 8 Desperdicios (Muda)
@@ -117,7 +117,69 @@ La metodología **5S** es una técnica de **gestión visual y estandarización d
     ];
 
     await (supabase.from('lessons') as any).insert(lessonsData);
-    console.log('Seed data successfully seeded for LMS!');
+
+    // 5. Insert Quiz for this course
+    const { data: newQuiz } = await (supabase.from('quizzes') as any)
+      .insert({
+        course_id: newCourse.id,
+        title: 'Cuestionario Evaluativo del Módulo Lean Manufacturing',
+        min_passing_score: 70,
+      })
+      .select()
+      .single();
+
+    if (newQuiz) {
+      // Questions
+      const questionsToInsert = [
+        {
+          quiz_id: newQuiz.id,
+          question_text: 'Un ensamblador camina 20 metros de ida y vuelta de forma repetitiva para buscar tornillos a un estante lejano. ¿Qué tipo de desperdicio se presenta principalmente?',
+          explanation: 'El movimiento innecesario se refiere al desplazamiento del operador dentro de su estación.',
+          order_index: 1,
+          options: [
+            { option_text: 'A) Defectos', is_correct: false },
+            { option_text: 'B) Movimiento innecesario', is_correct: true },
+            { option_text: 'C) Sobreprocesamiento', is_correct: false },
+            { option_text: 'D) Sobreproducción', is_correct: false },
+          ],
+        },
+        {
+          quiz_id: newQuiz.id,
+          question_text: '¿Por qué la Sobreproducción es considerada el desperdicio más grave en Lean Manufacturing?',
+          explanation: 'Fabricar en exceso satura los almacenes, demanda más transporte, incrementa el costo financiero y oculta defectos.',
+          order_index: 2,
+          options: [
+            { option_text: 'A) Porque satura el espacio y oculta el resto de desperdicios', is_correct: true },
+            { option_text: 'B) Porque obliga a las máquinas a trabajar despacio', is_correct: false },
+            { option_text: 'C) Porque elimina el mantenimiento', is_correct: false },
+            { option_text: 'D) Porque reduce los costos', is_correct: false },
+          ],
+        },
+      ];
+
+      for (const q of questionsToInsert) {
+        const { data: insertedQ } = await (supabase.from('quiz_questions') as any)
+          .insert({
+            quiz_id: q.quiz_id,
+            question_text: q.question_text,
+            explanation: q.explanation,
+            order_index: q.order_index,
+          })
+          .select()
+          .single();
+
+        if (insertedQ) {
+          const opts = q.options.map((o) => ({
+            question_id: insertedQ.id,
+            option_text: o.option_text,
+            is_correct: o.is_correct,
+          }));
+          await (supabase.from('quiz_options') as any).insert(opts);
+        }
+      }
+    }
+
+    console.log('Seed data successfully seeded for LMS (Courses, Modules, Lessons, Quizzes)!');
   } catch (err) {
     console.error('Unexpected error in seedLearningData:', err);
   }

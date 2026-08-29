@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { useAuth } from '../../context/AuthContext';
 import { supabase } from '../../lib/supabaseClient';
 
 interface QuizQuestionData {
-  id: number;
+  id: string | number;
   question: string;
   options: { id: string; text: string; isCorrect: boolean }[];
   feedback: string;
 }
 
-const SAMPLE_QUIZ_QUESTIONS: QuizQuestionData[] = [
+const FALLBACK_QUIZ_QUESTIONS: QuizQuestionData[] = [
   {
     id: 1,
     question: 'Un ensamblador camina 20 metros de ida y vuelta de forma repetitiva para buscar tornillos a un estante lejano. ¿Qué tipo de desperdicio se presenta principalmente?',
@@ -52,15 +52,72 @@ export const QuizPage: React.FC = () => {
   const { quizId } = useParams<{ quizId: string }>();
   const { user } = useAuth();
 
+  const [questions, setQuestions] = useState<QuizQuestionData[]>(FALLBACK_QUIZ_QUESTIONS);
+  const [quizTitle, setQuizTitle] = useState<string>('Evaluación del Módulo Lean Manufacturing');
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
-  const [submittedAnswers, setSubmittedAnswers] = useState<Record<number, boolean>>({});
+  const [selectedAnswers, setSelectedAnswers] = useState<Record<string | number, string>>({});
+  const [submittedAnswers, setSubmittedAnswers] = useState<Record<string | number, boolean>>({});
   const [isFinished, setIsFinished] = useState<boolean>(false);
   const [finalScore, setFinalScore] = useState<number>(0);
   const [passed, setPassed] = useState<boolean>(false);
 
-  const currentQ = SAMPLE_QUIZ_QUESTIONS[currentIndex];
-  const totalQuestions = SAMPLE_QUIZ_QUESTIONS.length;
+
+  const fetchDynamicQuiz = async () => {
+    try {
+
+
+      // Search quiz by course/id in Supabase
+      const { data: quizData } = await (supabase.from('quizzes') as any)
+        .select('*')
+        .limit(1)
+        .maybeSingle();
+
+      if (quizData) {
+        setQuizTitle(quizData.title);
+
+        const { data: qRows } = await (supabase.from('quiz_questions') as any)
+          .select('*')
+          .eq('quiz_id', quizData.id)
+          .order('order_index', { ascending: true });
+
+        if (qRows && qRows.length > 0) {
+          const parsedQuestions: QuizQuestionData[] = await Promise.all(
+            qRows.map(async (q: any, idx: number) => {
+              const { data: optRows } = await (supabase.from('quiz_options') as any)
+                .select('*')
+                .eq('question_id', q.id);
+
+              const options = (optRows || []).map((o: any, oIdx: number) => ({
+                id: String.fromCharCode(65 + oIdx), // 'A', 'B', 'C'
+                text: o.option_text,
+                isCorrect: !!o.is_correct,
+              }));
+
+              return {
+                id: q.id || idx + 1,
+                question: q.question_text,
+                options,
+                feedback: q.explanation || 'Consulta el material teórico para reforzar este concepto.',
+              };
+            })
+          );
+
+          if (parsedQuestions.length > 0) {
+            setQuestions(parsedQuestions);
+          }
+        }
+      }
+    } catch (err) {
+      console.error('Error fetching quiz dynamically:', err);
+    }
+  };
+
+  useEffect(() => {
+    fetchDynamicQuiz();
+  }, [quizId]);
+
+  const currentQ = questions[currentIndex] || FALLBACK_QUIZ_QUESTIONS[0];
+  const totalQuestions = questions.length;
   const progressPercentage = Math.round(((currentIndex + 1) / totalQuestions) * 100);
 
   const handleSelectOption = (optionId: string) => {
@@ -80,7 +137,7 @@ export const QuizPage: React.FC = () => {
 
   const handleFinishQuiz = async () => {
     let correctCount = 0;
-    SAMPLE_QUIZ_QUESTIONS.forEach((q) => {
+    questions.forEach((q) => {
       const selectedId = selectedAnswers[q.id];
       const correctOption = q.options.find((o) => o.isCorrect);
       if (selectedId === correctOption?.id) {
@@ -88,219 +145,206 @@ export const QuizPage: React.FC = () => {
       }
     });
 
-    const calculatedScore = Math.round((correctCount / totalQuestions) * 100);
-    const hasPassed = calculatedScore >= 70;
-
-    setFinalScore(calculatedScore);
-    setPassed(hasPassed);
+    const score = Math.round((correctCount / totalQuestions) * 100);
+    setFinalScore(score);
+    const isPass = score >= 70;
+    setPassed(isPass);
     setIsFinished(true);
 
     if (user) {
       try {
         await (supabase.from('user_quiz_attempts') as any).insert({
           user_id: user.id,
-          quiz_id: quizId || 'quiz-module-1',
-          score: calculatedScore,
-          passed: hasPassed,
-          answers_summary: selectedAnswers,
+          quiz_id: typeof currentQ.id === 'string' ? currentQ.id : null,
+          score,
+          passed: isPass,
         });
-      } catch (err) {
-        console.error('Error saving quiz attempt:', err);
+      } catch (e) {
+        console.error('Error recording quiz attempt in Supabase:', e);
       }
     }
   };
 
-  if (isFinished) {
-    return (
-      <DashboardLayout title="Resultado de Evaluación">
-        <div className="max-w-2xl mx-auto my-12 bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-8 shadow-level-2 text-center space-y-6">
-          <div
-            className={`w-20 h-20 rounded-full flex items-center justify-center mx-auto text-4xl shadow-inner ${
-              passed ? 'bg-tertiary-fixed-dim/20 text-tertiary' : 'bg-error-container text-on-error-container'
-            }`}
-          >
-            <span className="material-symbols-outlined text-5xl">
-              {passed ? 'verified' : 'cancel'}
-            </span>
-          </div>
-
-          <div className="space-y-2">
-            <span className="text-xs uppercase font-bold tracking-widest text-secondary">
-              Evaluación Completada
-            </span>
-            <h2 className="text-3xl font-bold font-headline text-on-surface">
-              Puntaje Obtenido: <span className={passed ? 'text-tertiary' : 'text-error'}>{finalScore}%</span>
-            </h2>
-            <p className="text-sm text-on-surface-variant max-w-md mx-auto">
-              {passed
-                ? '¡Felicidades! Has superado la evaluación del módulo con éxito.'
-                : 'No alcanzaste la nota mínima de aprobación (70%). Te recomendamos repasar los contenidos y reintentar.'}
-            </p>
-          </div>
-
-          <div className="flex gap-4 pt-4">
-            <button
-              onClick={() => {
-                setIsFinished(false);
-                setCurrentIndex(0);
-                setSelectedAnswers({});
-                setSubmittedAnswers({});
-              }}
-              className="flex-1 py-3 border border-outline text-on-surface font-semibold text-xs rounded-xl hover:bg-surface-container-high transition-colors cursor-pointer"
-            >
-              Reintentar Quiz
-            </button>
-
-            <button
-              onClick={() => navigate('/aprende')}
-              className="flex-1 py-3 bg-primary text-on-primary font-bold text-xs rounded-xl hover:bg-on-primary-fixed-variant transition-colors cursor-pointer shadow-sm"
-            >
-              Volver a la Academia
-            </button>
-          </div>
-        </div>
-      </DashboardLayout>
-    );
-  }
-
-  const selectedOptionId = selectedAnswers[currentQ.id];
-  const isConfirmed = submittedAnswers[currentQ.id];
+  const currentSelected = selectedAnswers[currentQ.id];
+  const isSubmitted = submittedAnswers[currentQ.id];
+  const correctOption = currentQ.options.find((o) => o.isCorrect);
+  const isCorrect = currentSelected === correctOption?.id;
 
   return (
-    <DashboardLayout title="Cuestionario de Evaluación">
-      <div className="max-w-3xl mx-auto my-6 space-y-6">
-        
-        {/* Header Title */}
-        <div className="text-center space-y-1">
-          <h2 className="font-headline text-2xl font-bold text-on-surface">
-            Cuestionario de Evaluación
-          </h2>
-          <p className="text-xs text-on-surface-variant">
-            Módulo 1: Fundamentos de Lean Manufacturing
-          </p>
+    <DashboardLayout title="Quiz Evaluativo - Academia">
+      <div className="max-w-3xl mx-auto space-y-6">
+        {/* Header Bar */}
+        <div className="flex justify-between items-center bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/20 shadow-level-1">
+          <div>
+            <span className="text-xs uppercase font-bold tracking-wider text-tertiary">
+              Evaluación del Módulo
+            </span>
+            <h1 className="font-headline text-xl md:text-2xl font-bold text-on-surface">
+              {quizTitle}
+            </h1>
+          </div>
+          <button
+            onClick={() => navigate(-1)}
+            className="px-3.5 py-2 rounded-xl border border-outline text-xs font-bold text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer"
+          >
+            Volver a la Lección
+          </button>
         </div>
 
-        {/* Quiz Card Container */}
-        <div className="bg-surface-container-lowest rounded-xl shadow-level-1 p-6 md:p-8 border border-outline-variant/20 space-y-6">
-          
-          {/* Progress Header */}
-          <div>
-            <div className="flex justify-between items-center text-xs font-semibold mb-2">
-              <span className="text-on-surface-variant uppercase tracking-wider">
-                Pregunta {currentIndex + 1} de {totalQuestions}
-              </span>
-              <span className="text-tertiary font-bold">{progressPercentage}% Completado</span>
-            </div>
-
-            <div className="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
-              <div
-                className="h-full bg-tertiary rounded-full transition-all duration-300"
-                style={{ width: `${progressPercentage}%` }}
-              ></div>
-            </div>
+        {/* Progress bar */}
+        <div className="space-y-1.5">
+          <div className="flex justify-between text-xs font-bold text-on-surface-variant">
+            <span>Pregunta {currentIndex + 1} de {totalQuestions}</span>
+            <span>{progressPercentage}%</span>
           </div>
+          <div className="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
+            <div
+              className="h-full bg-primary rounded-full transition-all duration-300"
+              style={{ width: `${progressPercentage}%` }}
+            ></div>
+          </div>
+        </div>
 
-          {/* Question Text */}
-          <div>
-            <h3 className="font-headline text-xl font-bold text-on-surface leading-snug">
+        {!isFinished ? (
+          /* Question Card */
+          <div className="bg-surface-container-lowest p-6 md:p-8 rounded-2xl border border-outline-variant/20 shadow-level-1 space-y-6">
+            <h2 className="font-headline text-lg md:text-xl font-bold text-on-surface leading-snug">
               {currentQ.question}
-            </h3>
-          </div>
+            </h2>
 
-          {/* Options List */}
-          <div className="space-y-3">
-            {currentQ.options.map((opt) => {
-              const isSelected = selectedOptionId === opt.id;
-              let optionStyle = 'border-outline-variant/60 hover:bg-surface-container-low text-on-surface';
+            {/* Options list */}
+            <div className="space-y-3">
+              {currentQ.options.map((option) => {
+                const isThisSelected = currentSelected === option.id;
+                let optionStyle =
+                  'border-outline-variant bg-surface-container-low text-on-surface hover:border-primary';
 
-              if (isSelected) {
-                if (isConfirmed) {
-                  optionStyle = opt.isCorrect
-                    ? 'border-tertiary bg-tertiary-fixed-dim/20 text-tertiary font-semibold'
-                    : 'border-error bg-error-container text-on-error-container font-semibold';
-                } else {
-                  optionStyle = 'border-primary ring-1 ring-primary bg-surface-container text-primary font-semibold';
+                if (isSubmitted) {
+                  if (option.isCorrect) {
+                    optionStyle = 'border-emerald-500 bg-emerald-500/10 text-emerald-700 font-bold';
+                  } else if (isThisSelected && !option.isCorrect) {
+                    optionStyle = 'border-rose-500 bg-rose-500/10 text-rose-700 font-bold';
+                  } else {
+                    optionStyle = 'border-outline-variant/30 opacity-50 bg-background text-on-surface-variant';
+                  }
+                } else if (isThisSelected) {
+                  optionStyle = 'border-primary bg-primary-container/40 font-bold text-primary ring-2 ring-primary/20';
                 }
-              }
 
-              return (
-                <label
-                  key={opt.id}
-                  onClick={() => handleSelectOption(opt.id)}
-                  className={`flex items-start gap-4 p-4 rounded-xl border cursor-pointer transition-all ${optionStyle}`}
-                >
-                  <input
-                    type="radio"
-                    name={`quiz_${currentQ.id}`}
-                    checked={isSelected}
-                    onChange={() => handleSelectOption(opt.id)}
-                    className="mt-1 text-primary focus:ring-primary border-outline-variant h-4 w-4"
-                  />
-                  <div className="flex flex-col flex-1">
-                    <span className="text-sm font-medium">{opt.text}</span>
-                  </div>
-                  {isConfirmed && isSelected && (
-                    <span className="material-symbols-outlined text-lg">
-                      {opt.isCorrect ? 'check_circle' : 'cancel'}
-                    </span>
-                  )}
-                </label>
-              );
-            })}
-          </div>
-
-          {/* Explanatory Feedback when confirmed */}
-          {isConfirmed && (
-            <div className="p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 text-xs space-y-1">
-              <span className="font-bold text-primary flex items-center gap-1">
-                <span className="material-symbols-outlined text-sm">info</span>
-                Retroalimentación Formativa:
-              </span>
-              <p className="text-on-surface-variant leading-relaxed">{currentQ.feedback}</p>
+                return (
+                  <button
+                    key={option.id}
+                    onClick={() => handleSelectOption(option.id)}
+                    className={`w-full p-4 rounded-xl border text-left text-xs md:text-sm transition-all flex items-start gap-3 cursor-pointer ${optionStyle}`}
+                  >
+                    <span className="font-bold shrink-0 mt-0.5">{option.id}.</span>
+                    <span className="flex-1 leading-relaxed">{option.text}</span>
+                  </button>
+                );
+              })}
             </div>
-          )}
 
-          {/* Actions */}
-          <div className="flex justify-between items-center pt-6 border-t border-outline-variant/30">
-            <button
-              onClick={() => {
-                if (currentIndex > 0) setCurrentIndex((prev) => prev - 1);
-              }}
-              disabled={currentIndex === 0}
-              className="text-xs font-semibold text-on-surface-variant hover:text-on-surface disabled:opacity-30 flex items-center gap-1 cursor-pointer"
-            >
-              <span className="material-symbols-outlined text-base">arrow_back</span>
-              Anterior
-            </button>
-
-            {!isConfirmed ? (
-              <button
-                onClick={handleConfirmAnswer}
-                disabled={!selectedOptionId}
-                className="bg-primary-container text-on-primary-container font-semibold text-xs px-6 py-2.5 rounded-lg hover:bg-primary hover:text-on-primary disabled:opacity-40 transition-colors cursor-pointer"
+            {/* Feedback Box */}
+            {isSubmitted && (
+              <div
+                className={`p-4 rounded-xl text-xs leading-relaxed space-y-1 ${
+                  isCorrect
+                    ? 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-800'
+                    : 'bg-rose-500/10 border border-rose-500/30 text-rose-800'
+                }`}
               >
-                Confirmar Respuesta
-              </button>
-            ) : currentIndex < totalQuestions - 1 ? (
-              <button
-                onClick={handleNext}
-                className="bg-primary text-on-primary font-semibold text-xs px-6 py-2.5 rounded-lg hover:bg-on-primary-fixed-variant transition-colors flex items-center gap-1 cursor-pointer"
-              >
-                <span>Siguiente Pregunta</span>
-                <span className="material-symbols-outlined text-base">arrow_forward</span>
-              </button>
-            ) : (
-              <button
-                onClick={handleFinishQuiz}
-                className="bg-tertiary-container text-on-tertiary font-bold text-xs px-6 py-2.5 rounded-lg hover:bg-tertiary transition-colors flex items-center gap-1 cursor-pointer shadow-sm"
-              >
-                <span>Finalizar & Ver Resultado</span>
-                <span className="material-symbols-outlined text-base">military_tech</span>
-              </button>
+                <div className="font-bold flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-base">
+                    {isCorrect ? 'check_circle' : 'cancel'}
+                  </span>
+                  {isCorrect ? '¡Respuesta Correcta!' : 'Respuesta Incorrecta'}
+                </div>
+                <p>{currentQ.feedback}</p>
+              </div>
             )}
-          </div>
 
-        </div>
+            {/* Question Footer Actions */}
+            <div className="pt-4 border-t border-outline-variant/30 flex justify-between items-center">
+              {!isSubmitted ? (
+                <button
+                  onClick={handleConfirmAnswer}
+                  disabled={!currentSelected}
+                  className="px-6 py-2.5 bg-primary text-on-primary font-bold text-xs rounded-xl hover:bg-on-primary-fixed-variant disabled:opacity-40 transition-colors shadow-sm cursor-pointer ml-auto"
+                >
+                  Confirmar Respuesta
+                </button>
+              ) : (
+                <div className="flex justify-end w-full">
+                  {currentIndex < totalQuestions - 1 ? (
+                    <button
+                      onClick={handleNext}
+                      className="px-6 py-2.5 bg-primary text-on-primary font-bold text-xs rounded-xl hover:bg-on-primary-fixed-variant transition-colors shadow-sm cursor-pointer flex items-center gap-1"
+                    >
+                      <span>Siguiente Pregunta</span>
+                      <span className="material-symbols-outlined text-base">arrow_forward</span>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleFinishQuiz}
+                      className="px-6 py-2.5 bg-tertiary text-on-tertiary font-bold text-xs rounded-xl hover:bg-tertiary-container transition-colors shadow-sm cursor-pointer flex items-center gap-1"
+                    >
+                      <span>Finalizar Evaluación</span>
+                      <span className="material-symbols-outlined text-base">emoji_events</span>
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        ) : (
+          /* Results View */
+          <div className="bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/20 shadow-level-1 text-center space-y-6">
+            <div className="w-20 h-20 mx-auto rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shadow-inner">
+              <span className="material-symbols-outlined text-4xl">
+                {passed ? 'workspace_premium' : 'sentiment_dissatisfied'}
+              </span>
+            </div>
+
+            <div>
+              <h2 className="font-headline text-2xl font-bold text-on-surface">
+                {passed ? '¡Felicidades, Evaluación Aprobada!' : 'Evaluación Completada'}
+              </h2>
+              <p className="text-xs text-on-surface-variant mt-1">
+                {passed
+                  ? 'Has demostrado dominio conceptual de este módulo.'
+                  : 'Revisa los conceptos teóricos e inténtalo nuevamente para consolidar el conocimiento.'}
+              </p>
+            </div>
+
+            <div className="p-6 bg-surface-container-low rounded-2xl max-w-xs mx-auto space-y-1">
+              <span className="text-xs uppercase font-bold text-on-surface-variant">Calificación Obtenida</span>
+              <p className={`text-4xl font-headline font-bold ${passed ? 'text-emerald-600' : 'text-rose-600'}`}>
+                {finalScore}%
+              </p>
+            </div>
+
+            <div className="flex justify-center gap-3 pt-4 border-t border-outline-variant/30">
+              <button
+                onClick={() => {
+                  setIsFinished(false);
+                  setCurrentIndex(0);
+                  setSelectedAnswers({});
+                  setSubmittedAnswers({});
+                }}
+                className="px-5 py-2.5 border border-outline rounded-xl font-bold text-xs text-on-surface hover:bg-surface-container-high cursor-pointer"
+              >
+                Reintentar Evaluación
+              </button>
+
+              <button
+                onClick={() => navigate('/aprende')}
+                className="px-6 py-2.5 bg-primary text-on-primary font-bold text-xs rounded-xl hover:bg-on-primary-fixed-variant shadow-sm cursor-pointer"
+              >
+                Volver al Catálogo
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </DashboardLayout>
   );
