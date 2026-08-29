@@ -26,7 +26,7 @@ export const LessonEditorModal: React.FC<LessonEditorModalProps> = ({
   moduleId,
   initialData,
 }) => {
-  const [activeTab, setActiveTab] = useState<'general' | 'video' | 'content' | 'resources' | 'preview'>('content');
+  const [activeTab, setActiveTab] = useState<'content' | 'video' | 'resources' | 'general' | 'preview'>('content');
   
   const [title, setTitle] = useState<string>('');
   const [slug, setSlug] = useState<string>('');
@@ -78,16 +78,69 @@ export const LessonEditorModal: React.FC<LessonEditorModalProps> = ({
     );
   };
 
+  // Ensure we get or create a valid PostgreSQL UUID for course_module
+  const getValidModuleId = async (): Promise<string | null> => {
+    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(moduleId);
+    if (isUUID) return moduleId;
+
+    // Search for existing real module in Supabase
+    const { data: realMod } = await (supabase.from('course_modules') as any)
+      .select('id')
+      .limit(1)
+      .maybeSingle();
+
+    if (realMod && realMod.id) {
+      return realMod.id;
+    }
+
+    // If no course module exists yet, create course and module
+    let courseId = null;
+    const { data: realCourse } = await (supabase.from('courses') as any)
+      .select('id')
+      .limit(1)
+      .maybeSingle();
+
+    if (realCourse && realCourse.id) {
+      courseId = realCourse.id;
+    } else {
+      const { data: newCourse } = await (supabase.from('courses') as any)
+        .insert({
+          title: 'Fundamentos de Lean Manufacturing & Eliminación de Desperdicios',
+          slug: 'lean-manufacturing',
+          description: 'Aprende a optimizar procesos en tu empresa.',
+          level_required: 1,
+        })
+        .select('id')
+        .single();
+      if (newCourse) courseId = newCourse.id;
+    }
+
+    if (courseId) {
+      const { data: newMod } = await (supabase.from('course_modules') as any)
+        .insert({
+          course_id: courseId,
+          title: 'Módulo 1: Filosofía Lean & Estabilidad Operativa',
+          order_index: 1,
+        })
+        .select('id')
+        .single();
+      if (newMod) return newMod.id;
+    }
+
+    return null;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
     try {
+      const validModId = await getValidModuleId();
+
       const generatedSlug = slug.trim() || title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
       const payload = {
-        module_id: moduleId,
         title: title || 'Nueva Lección',
         slug: generatedSlug,
         video_url: videoUrl || null,
@@ -96,20 +149,27 @@ export const LessonEditorModal: React.FC<LessonEditorModalProps> = ({
         resources,
       };
 
-      if (initialData?.id && !initialData.id.startsWith('lesson-')) {
+      const isExistingUUID = initialData?.id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(initialData.id);
+
+      if (isExistingUUID) {
         const { error: updateErr } = await (supabase.from('lessons') as any)
           .update(payload)
           .eq('id', initialData.id);
 
         if (updateErr) {
+          console.error('Error updating lesson:', updateErr);
           setError(updateErr.message);
           setLoading(false);
           return;
         }
-      } else {
-        const { error: insertErr } = await (supabase.from('lessons') as any).insert(payload);
+      } else if (validModId) {
+        const { error: insertErr } = await (supabase.from('lessons') as any).insert({
+          ...payload,
+          module_id: validModId,
+        });
 
         if (insertErr) {
+          console.error('Error inserting lesson:', insertErr);
           setError(insertErr.message);
           setLoading(false);
           return;
