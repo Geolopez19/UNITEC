@@ -1,0 +1,288 @@
+ <!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Academia RutaPyme - Course Catalog</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed": "#002113",
+                        "background": "#f8f9ff",
+                        "error-container": "#ffdad6",
+                        "on-surface-variant": "#434655",
+                        "surface-container": "#e6eeff",
+                        "secondary": "#5c5f61",
+                        "outline-variant": "#c3c6d7",
+                        "tertiary": "#006242",
+                        "on-surface": "#0d1c2e",
+                        "surface-container-highest": "#d5e3fc",
+                        "on-background": "#0d1c2e",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "error": "#ba1a1a",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed-dim": "#c4c7c9",
+                        "secondary-container": "#e0e3e5",
+                        "tertiary-fixed": "#6ffbbe",
+                        "secondary-fixed": "#e0e3e5",
+                        "surface-bright": "#f8f9ff",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "on-primary-fixed": "#00174b",
+                        "on-secondary-fixed": "#191c1e",
+                        "surface-tint": "#0053db",
+                        "surface-variant": "#d5e3fc",
+                        "surface-dim": "#ccdbf3",
+                        "inverse-primary": "#b4c5ff",
+                        "primary-fixed": "#dbe1ff",
+                        "on-tertiary": "#ffffff",
+                        "surface": "#f8f9ff",
+                        "on-secondary-container": "#626567",
+                        "outline": "#737686",
+                        "on-error": "#ffffff",
+                        "primary": "#004ac6",
+                        "surface-container-high": "#dce9ff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-primary-container": "#eeefff",
+                        "primary-container": "#2563eb",
+                        "on-secondary-fixed-variant": "#444749",
+                        "on-tertiary-container": "#bdffdb",
+                        "surface-container-low": "#eff4ff",
+                        "tertiary-container": "#007d55",
+                        "inverse-surface": "#233144"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "margin-desktop": "32px",
+                        "sidebar-width": "260px",
+                        "base": "8px",
+                        "container-max": "1440px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"],
+                        "headline-lg-mobile": ["Manrope"],
+                        "headline-md": ["Manrope"],
+                        "label-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "headline-lg": ["Manrope"],
+                        "headline-sm": ["Manrope"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased min-h-screen overflow-x-hidden">
+<!-- Top Navigation (Web) -->
+<header class="hidden md:flex fixed top-0 right-0 w-[calc(100%-260px)] z-40 bg-surface dark:bg-on-surface flex justify-between items-center px-8 h-16 border-none shadow-none">
+<div class="flex items-center gap-8">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Luminous LMS</h1>
+<nav class="flex gap-6">
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-label-md text-label-md py-5 border-b-2 border-transparent" href="#">Dashboard</a>
+<a class="text-primary border-b-2 border-primary pb-1 font-label-md text-label-md py-5 font-semibold" href="#">My Courses</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-label-md text-label-md py-5 border-b-2 border-transparent" href="#">Certificates</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-200">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-200">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-200">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-primary-container hover:text-on-primary-container transition-colors duration-200">Continue Learning</button>
+</div>
+</header>
+<!-- Sidebar (Web) -->
+<aside class="hidden md:flex w-[260px] h-screen fixed left-0 top-0 bg-surface-container-lowest dark:bg-inverse-surface flex-col border-r border-outline-variant shadow-[0px_4px_20px_rgba(0,0,0,0.04)] z-50">
+<div class="p-6 flex flex-col items-start border-b border-outline-variant/30">
+<img alt="Brand Logo" class="w-32 h-auto mb-4 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0_yEucuIe_MIs1enC3kFo3jUYaqPbWibBuyCRNVxnqtOZNeEDaehZz3iTgMewAb9GwvF_38pT7sZQlHkObd4-jqh0TjbTU3guUYzAQY3MrVd02bU4Cee4Ws7hmeALNCFZ1hVvPBmLx7039fztF7UB3PuRXMFvw2ICoCtxivb7LX_9DFJFqQTTQDY5ZL5XfBCU2y90s0e_Q0lvdgsh6iQgMWWfbTd0jGLiKMtMhUFWUpIylRbfc838SFZF6yxB1NHqNi4"/>
+<h2 class="font-headline-sm text-headline-sm font-bold text-primary dark:text-inverse-primary">Business Growth LMS</h2>
+<p class="font-body-sm text-body-sm text-secondary">Modern Entrepreneurship</p>
+</div>
+<nav class="flex-1 overflow-y-auto py-4 flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 mx-2 rounded-lg border-l-4 border-tertiary bg-surface-container-low text-tertiary font-semibold font-label-md text-label-md active:scale-[0.98] transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book" data-weight="fill" style="font-variation-settings: 'FILL' 1;">menu_book</span>
+                Course Overview
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 mx-2 rounded-lg text-secondary hover:text-primary hover:bg-surface-container-high transition-colors duration-200 font-label-md text-label-md active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="lightbulb">lightbulb</span>
+                Module 1: Strategy
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 mx-2 rounded-lg text-secondary hover:text-primary hover:bg-surface-container-high transition-colors duration-200 font-label-md text-label-md active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+                Module 2: Finance
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 mx-2 rounded-lg text-secondary hover:text-primary hover:bg-surface-container-high transition-colors duration-200 font-label-md text-label-md active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="campaign">campaign</span>
+                Module 3: Marketing
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 mx-2 rounded-lg text-secondary hover:text-primary hover:bg-surface-container-high transition-colors duration-200 font-label-md text-label-md active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="quiz">quiz</span>
+                Take Final Quiz
+            </a>
+</nav>
+<div class="p-4 border-t border-outline-variant/30">
+<button class="w-full bg-surface-container-highest text-on-surface font-label-md text-label-md py-2 rounded-lg hover:bg-surface-variant transition-colors duration-200 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="download">download</span>
+                Resource Library
+            </button>
+</div>
+<div class="p-2 border-t border-outline-variant/30 flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-secondary hover:text-primary hover:bg-surface-container-high transition-colors duration-200 font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="help">help</span>
+                Help Center
+            </a>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-secondary hover:text-primary hover:bg-surface-container-high transition-colors duration-200 font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="settings">settings</span>
+                Settings
+            </a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-[260px] md:mt-16 p-margin-mobile md:p-margin-desktop max-w-container-max mx-auto min-h-screen flex flex-col gap-gutter">
+<!-- Header Section -->
+<section class="flex flex-col gap-2 mb-4">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Academia RutaPyme</h2>
+<p class="font-body-lg text-body-lg text-secondary max-w-2xl">Empower your small business journey with expert-led courses designed for real-world application.</p>
+</section>
+<!-- Search & Filter Bar -->
+<section class="bg-surface-container-lowest rounded-xl p-4 shadow-[0px_4px_20px_rgba(0,0,0,0.04)] flex flex-col sm:flex-row gap-4 items-center justify-between mb-2">
+<div class="relative w-full sm:w-96 flex-shrink-0">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary" data-icon="search">search</span>
+<input class="w-full pl-10 pr-4 py-2 rounded-lg border border-outline-variant/50 focus:border-primary focus:ring-1 focus:ring-primary bg-background text-on-surface font-body-sm text-body-sm transition-all duration-200" placeholder="Search courses..." type="text"/>
+</div>
+<div class="flex gap-2 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0 hide-scrollbar">
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-primary-container text-on-primary-container font-label-sm text-label-sm hover:bg-primary hover:text-on-primary transition-colors">All Courses</button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full border border-outline-variant bg-transparent text-secondary font-label-sm text-label-sm hover:bg-surface-container-high transition-colors">Finance</button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full border border-outline-variant bg-transparent text-secondary font-label-sm text-label-sm hover:bg-surface-container-high transition-colors">Strategy</button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full border border-outline-variant bg-transparent text-secondary font-label-sm text-label-sm hover:bg-surface-container-high transition-colors">Marketing</button>
+</div>
+</section>
+<!-- Course Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Course Card 1: In Progress -->
+<article class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0px_4px_20px_rgba(0,0,0,0.04)] flex flex-col group hover:shadow-[0px_10px_30px_rgba(0,0,0,0.08)] transition-shadow duration-300">
+<div class="h-40 bg-surface-container-highest relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A modern, high-key lighting photograph of a minimalist office desk with a laptop, a notebook, and a small potted plant. The overall color palette is bright white with subtle cool blue and emerald green accents, reflecting a calm, professional business environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVovK12I8P98tV8CYeLLoV0uMTExQR0mtN4i6ng9-79UEEhxx0hQtZ7m8woKddwg5iHpiZnD_yH0a7aZU90S5ajMW0c_gWynSVBJ8fgRXmiMM5zbQ62autYICXbHsUrGIou7neQ8zob2U8FziMRIOtADe1uMdngDyvHH8kx04bc9A8xBxdK90Q7GYL0nDHCLPXNTW6BPvUy2S2K3hMhiNxxtQiW7HWeJsFCslShhEK6y9UkMVjArig8g"/>
+<div class="absolute top-3 left-3 bg-tertiary/90 text-on-tertiary px-2 py-1 rounded-md font-label-sm text-label-sm shadow-sm backdrop-blur-sm">Finance</div>
+</div>
+<div class="p-6 flex flex-col flex-1 gap-4">
+<div class="flex-1">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2 line-clamp-2">Mastering Cash Flow for Small Businesses</h3>
+<p class="font-body-sm text-body-sm text-secondary line-clamp-2">Learn essential techniques to manage, forecast, and optimize your business's lifeblood.</p>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center font-label-sm text-label-sm text-secondary">
+<span>45% Complete</span>
+<span>2h 15m left</span>
+</div>
+<div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-[45%] rounded-full"></div>
+</div>
+</div>
+<div class="pt-2 border-t border-outline-variant/30 flex justify-between items-center mt-2">
+<span class="flex items-center gap-1 text-secondary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="star">star</span>
+                            4.8 (120)
+                        </span>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-primary-container hover:text-on-primary-container transition-colors duration-200">Continue</button>
+</div>
+</div>
+</article>
+<!-- Course Card 2: Not Started -->
+<article class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0px_4px_20px_rgba(0,0,0,0.04)] flex flex-col group hover:shadow-[0px_10px_30px_rgba(0,0,0,0.08)] transition-shadow duration-300">
+<div class="h-40 bg-surface-container-highest relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Abstract digital illustration showing upward trending geometric arrows in soft blue and emerald green hues against a clean white background. The image feels bright, structured, and modern, representing strategic growth and efficient planning." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC91Xy4H6W5leAWJf54OmcLzmEVXfMJxnSp8CRUD18KgD1SJ6jOLbx_El2t9hx-M6dlSE874peiLuxzmfe0IFdIOoH2yT-_GEqROY1VZShzpAl88-2mONjVR6_cWtO87l5RokmaWKmmev-Q_5ce715ZSiBtgeD525jR1YG9hQue84rrP8PGZ3TzNY79-HOuctaYmVMbo9VwMnZVD7cEac-ZmFs7BI52kFp-VbHnQ6VwXZFBtZmjie5FPA"/>
+<div class="absolute top-3 left-3 bg-primary-container/90 text-on-primary-container px-2 py-1 rounded-md font-label-sm text-label-sm shadow-sm backdrop-blur-sm">Strategy</div>
+</div>
+<div class="p-6 flex flex-col flex-1 gap-4">
+<div class="flex-1">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2 line-clamp-2">Building a Resilient Business Plan</h3>
+<p class="font-body-sm text-body-sm text-secondary line-clamp-2">Develop a clear, actionable roadmap that adapts to market changes and drives sustainable growth.</p>
+</div>
+<div class="flex items-center gap-3 text-secondary font-label-sm text-label-sm mt-auto pb-2">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]" data-icon="schedule">schedule</span> 4h 30m</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]" data-icon="video_library">video_library</span> 12 Lessons</span>
+</div>
+<div class="pt-4 border-t border-outline-variant/30 flex justify-between items-center">
+<span class="flex items-center gap-1 text-secondary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="star">star</span>
+                            4.9 (85)
+                        </span>
+<button class="bg-transparent border border-primary text-primary px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-surface-container-high transition-colors duration-200">Start Course</button>
+</div>
+</div>
+</article>
+<!-- Course Card 3: Not Started -->
+<article class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0px_4px_20px_rgba(0,0,0,0.04)] flex flex-col group hover:shadow-[0px_10px_30px_rgba(0,0,0,0.08)] transition-shadow duration-300">
+<div class="h-40 bg-surface-container-highest relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A clean, modern composition of social media icons and graph lines interacting on a white surface, illuminated by soft, diffused lighting. The color palette incorporates vibrant blue and soft gray, conveying digital connectivity and professional marketing concepts." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTbGz9FHQB0rJtz6_GKm9MaAeI2Z0jKMaDMC_Ka2zDmC97ga3TfZ2f3RgFbQrU7aaqlRA3pvG63epOC6AIFVEc7WRHoRm4c60hkhe5EyXWj2so0awrXR-id1QwQzuNhkGOcbmDJMEt4fjJ6pHARy9eeXANOaM9ZpRzrMdOJmmpSMrx39Rb1K-MsUwNpGn6iuhDj8V9UDbxPy24Le5dRXXxQjLhW4GAtl7xZtIiA2WHKRy7Wx0oTIXrUQ"/>
+<div class="absolute top-3 left-3 bg-surface-tint/90 text-on-primary px-2 py-1 rounded-md font-label-sm text-label-sm shadow-sm backdrop-blur-sm">Marketing</div>
+</div>
+<div class="p-6 flex flex-col flex-1 gap-4">
+<div class="flex-1">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2 line-clamp-2">Digital Marketing Fundamentals</h3>
+<p class="font-body-sm text-body-sm text-secondary line-clamp-2">Expand your reach and attract the right customers with proven online marketing strategies.</p>
+</div>
+<div class="flex items-center gap-3 text-secondary font-label-sm text-label-sm mt-auto pb-2">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]" data-icon="schedule">schedule</span> 5h 15m</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]" data-icon="video_library">video_library</span> 15 Lessons</span>
+</div>
+<div class="pt-4 border-t border-outline-variant/30 flex justify-between items-center">
+<span class="flex items-center gap-1 text-secondary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="star">star</span>
+                            4.7 (210)
+                        </span>
+<button class="bg-transparent border border-primary text-primary px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-surface-container-high transition-colors duration-200">Start Course</button>
+</div>
+</div>
+</article>
+</section>
+</main>
+<style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</body></html>

@@ -1,0 +1,70 @@
+# Módulo de Aprendizaje: Fundamentos de Lean Manufacturing
+
+**Modalidad:** Micro-learning interactivo autoguiado  
+**Total de Bloques:** 5  
+**Criterio de Aprobación:** 80% de respuestas correctas  
+
+---
+
+## Índice de Contenidos y Progreso
+
+- [Bloque 1: Filosofía Lean y los 8 Desperdicios (Muda)](#bloque-1-filosofía-lean-y-los-8-desperdicios-muda) — **Avance: 0% → 20%**
+- [Bloque 2: Estabilidad Operativa y Metodología 5S](#bloque-2-estabilidad-operativa-y-metodología-5s) — **Avance: 20% → 40%**
+- [Bloque 3: Flujo Continuo, Takt Time y Sistemas Pull (Kanban)](#bloque-3-flujo-continuo-takt-time-y-sistemas-pull-kanban) — **Avance: 40% → 60%**
+- [Bloque 4: Flexibilidad y Reducción de Tiempos de Cambio (SMED)](#bloque-4-flexibilidad-y-reducción-de-tiempos-de-cambio-smed) — **Avance: 60% → 80%**
+- [Bloque 5: Calidad en la Fuente (Jidoka/Poka-Yoke) y Solución de Problemas (A3)](#bloque-5-calidad-en-la-fuente-jidokapoka-yoke-y-solución-de-problemas-a3) — **Avance: 80% → 100%**
+
+---
+
+## Bloque 1: Filosofía Lean y los 8 Desperdicios (Muda)
+
+### 1.1 Lectura Conceptual
+
+**Lean Manufacturing** es una filosofía de gestión originada en el Sistema de Producción Toyota (TPS). Su propósito central es **maximizar el valor entregado al cliente final eliminando sistemáticamente el desperdicio (*Muda*)**, la sobrecarga (*Muri*) y la variabilidad (*Mura*).
+
+* **Valor Agregado (VA):** Toda actividad que transforma física o químicamente el producto/servicio y por la cual el cliente está dispuesto a pagar.
+* **No Valor Agregado Necesario (NVAN):** Actividades que no agregan valor directo pero son indispensables bajo las condiciones actuales (ej. cumplimiento legal, calibraciones, contabilidad).
+* **Desperdicio (Muda):** Todo consumo de recursos (tiempo, espacio, esfuerzo o dinero) que no añade valor.
+
+#### Los 8 Desperdicios Clásicos (Acrónimo TIMWOODS)
+
+| Letra | Desperdicio | Descripción |
+| :--- | :--- | :--- |
+| **T** | **Transporte** (*Transport*) | Mover materiales o productos de un área a otra sin agregar valor. |
+| **I** | **Inventario** (*Inventory*) | Acumulación excesiva de materia prima, producto en proceso (WIP) o terminado. |
+| **M** | **Movimiento** (*Motion*) | Desplazamientos innecesarios del personal, flexiones o mala ergonomía. |
+| **W** | **Esperas** (*Waiting*) | Tiempos muertos esperando piezas, firmas de aprobación, reparaciones o datos. |
+| **O** | **Sobreproducción** (*Overproduction*) | Fabricar más cantidad o antes de lo requerido (el peor desperdicio). |
+| **O** | **Sobreprocesamiento** (*Overprocessing*) | Realizar pasos adicionales, acabados o tolerancias más allá de lo exigido. |
+| **D** | **Defectos** (*Defects*) | Errores, scrap, retrabajos o descartes que consumen horas y material. |
+| **S** | **Talento No Aprovechado** (*Skills*) | No escuchar ni aprovechar las ideas y habilidades del personal de línea. |
+
+---
+
+### 1.2 Cuestionario de Validación — Bloque 1
+
+**Pregunta 1.1**  
+Un ensamblador camina 20 metros de ida y vuelta de forma repetitiva para buscar tornillos a un estante lejano. ¿Qué tipo de desperdicio se presenta principalmente?
+- [ ] A) Defectos
+- [x] B) Movimiento innecesario
+- [ ] C) Sobreprocesamiento
+- [ ] D) Sobreproducción
+
+> **Retroalimentación:** El movimiento innecesario se refiere al desplazamiento del operador dentro de su estación. El transporte se refiere al traslado de materiales o lotes entre áreas.
+
+**Pregunta 1.2**  
+¿Por qué la Sobreproducción es considerada el desperdicio más grave en Lean?
+- [x] A) Porque satura el espacio y oculta el resto de desperdicios (inventario, transporte, defectos)
+- [ ] B) Porque obliga a las máquinas a trabajar a velocidades inferiores a la nominal
+- [ ] C) Porque elimina la necesidad de mantenimiento preventivo
+- [ ] D) Porque reduce automáticamente los costos de entrega
+
+> **Retroalimentación:** Fabricar en exceso satura los almacenes, demanda más transporte, incrementa el costo financiero y oculta defectos que tardarán días o semanas en ser descubiertos.
+
+---
+
+## Bloque 2: Estabilidad Operativa y Metodología 5S
+
+### 2.1 Lectura Conceptual
+
+La metodología **5S** no es un plan de aseo estético; es una técnica de **gestión visual y estandarización del puesto de trabajo** orientada a que cualquier anomalía se vuelva evidente en cuestión de segundos.

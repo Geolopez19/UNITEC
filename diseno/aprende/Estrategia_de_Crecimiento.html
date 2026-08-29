@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Clase: Estrategia de Crecimiento</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed": "#002113",
+                        "background": "#f8f9ff",
+                        "error-container": "#ffdad6",
+                        "on-surface-variant": "#434655",
+                        "surface-container": "#e6eeff",
+                        "secondary": "#5c5f61",
+                        "outline-variant": "#c3c6d7",
+                        "tertiary": "#006242",
+                        "on-surface": "#0d1c2e",
+                        "surface-container-highest": "#d5e3fc",
+                        "on-background": "#0d1c2e",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "error": "#ba1a1a",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed-dim": "#c4c7c9",
+                        "secondary-container": "#e0e3e5",
+                        "tertiary-fixed": "#6ffbbe",
+                        "secondary-fixed": "#e0e3e5",
+                        "surface-bright": "#f8f9ff",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "on-primary-fixed": "#00174b",
+                        "on-secondary-fixed": "#191c1e",
+                        "surface-tint": "#0053db",
+                        "surface-variant": "#d5e3fc",
+                        "surface-dim": "#ccdbf3",
+                        "inverse-primary": "#b4c5ff",
+                        "primary-fixed": "#dbe1ff",
+                        "on-tertiary": "#ffffff",
+                        "surface": "#f8f9ff",
+                        "on-secondary-container": "#626567",
+                        "outline": "#737686",
+                        "on-error": "#ffffff",
+                        "primary": "#004ac6",
+                        "surface-container-high": "#dce9ff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-primary-container": "#eeefff",
+                        "primary-container": "#2563eb",
+                        "on-secondary-fixed-variant": "#444749",
+                        "on-tertiary-container": "#bdffdb",
+                        "surface-container-low": "#eff4ff",
+                        "tertiary-container": "#007d55",
+                        "inverse-surface": "#233144"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "margin-desktop": "32px",
+                        "sidebar-width": "260px",
+                        "base": "8px",
+                        "container-max": "1440px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"],
+                        "headline-lg-mobile": ["Manrope"],
+                        "headline-md": ["Manrope"],
+                        "label-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "headline-lg": ["Manrope"],
+                        "headline-sm": ["Manrope"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: theme('colors.background');
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Manrope', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col md:flex-row antialiased">
+<!-- TopAppBar (Mobile & Desktop Header Area) -->
+<header class="fixed top-0 right-0 w-full md:w-[calc(100%-260px)] z-40 bg-surface dark:bg-on-surface flex justify-between items-center px-8 h-16 shadow-none md:border-b-0 border-b border-outline-variant">
+<div class="flex items-center gap-4">
+<button aria-label="Open Menu" class="md:hidden text-primary p-2 -ml-2">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<div class="font-headline-md text-headline-md font-bold text-primary flex items-center gap-3">
+<img alt="Logo" class="h-8 object-contain hidden md:block" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwdUUL8cA5gZ-CQc756uaCjsfJHE3fQVJwr3BemgsKI-HGAE0UUpFUngrrxStjB5H1vofkJcUoS3GY7-fZKU11FPZOfcDx0br-7MnBcZCeDI1esmKz192gj1Ur_wRFusxvVeZ3IBVSYEfqNTbFdVKv7Dhc14Ndt4864YDcW5PRZr65rFuCe2vDHzZhPbCsqGSBgqjgFooBOc5Bxh9IVyglzP-LPc-rGmnrJ6WtjC9nqxt402qvq36XEu71irgzP623wis"/>
+                 Luminous LMS
+            </div>
+</div>
+<nav class="hidden md:flex gap-6">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md py-5 border-b-2 border-transparent" href="#">Dashboard</a>
+<a class="text-primary border-b-2 border-primary py-5 font-label-md text-label-md" href="#">My Courses</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md py-5 border-b-2 border-transparent" href="#">Certificates</a>
+</nav>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex gap-4">
+<span class="material-symbols-outlined cursor-pointer text-on-surface-variant hover:text-primary transition-opacity active:opacity-80" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined cursor-pointer text-on-surface-variant hover:text-primary transition-opacity active:opacity-80" data-icon="account_circle">account_circle</span>
+</div>
+<button class="bg-primary-container text-on-primary-container font-label-md text-label-md px-4 py-2 rounded-full hover:bg-primary hover:text-on-primary transition-colors hidden md:block">
+                Continue Learning
+            </button>
+</div>
+</header>
+<!-- SideNavBar (Desktop Fixed) -->
+<nav class="hidden md:flex flex-col h-screen fixed left-0 top-0 w-[260px] bg-surface-container-lowest dark:bg-inverse-surface shadow-[0px_4px_20px_rgba(0,0,0,0.04)] z-50 border-r border-outline-variant transition-transform duration-300 ease-in-out">
+<div class="p-6 flex flex-col gap-2 border-b border-outline-variant">
+<div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-headline-sm font-bold mb-2">
+                BG
+             </div>
+<h2 class="font-headline-sm text-headline-sm font-bold text-primary dark:text-inverse-primary truncate">Business Growth LMS</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Modern Entrepreneurship</p>
+</div>
+<div class="flex-1 overflow-y-auto py-4">
+<ul class="flex flex-col">
+<li class="px-2 mb-1">
+<a class="flex items-center gap-3 text-secondary hover:text-primary px-4 py-3 rounded-lg hover:bg-surface-container-high transition-colors duration-200 active:scale-[0.98] font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+                        Course Overview
+                    </a>
+</li>
+<li class="px-2 mb-1">
+<a class="flex items-center gap-3 border-l-4 border-tertiary bg-surface-container-low text-tertiary font-semibold px-4 py-3 rounded-r-lg font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="lightbulb" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+                        Module 1: Strategy
+                    </a>
+</li>
+<li class="px-2 mb-1">
+<a class="flex items-center gap-3 text-secondary hover:text-primary px-4 py-3 rounded-lg hover:bg-surface-container-high transition-colors duration-200 active:scale-[0.98] font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+                        Module 2: Finance
+                    </a>
+</li>
+<li class="px-2 mb-1">
+<a class="flex items-center gap-3 text-secondary hover:text-primary px-4 py-3 rounded-lg hover:bg-surface-container-high transition-colors duration-200 active:scale-[0.98] font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="campaign">campaign</span>
+                        Module 3: Marketing
+                    </a>
+</li>
+<li class="px-2 mb-1 mt-4 border-t border-outline-variant pt-4">
+<a class="flex items-center gap-3 text-secondary hover:text-primary px-4 py-3 rounded-lg hover:bg-surface-container-high transition-colors duration-200 active:scale-[0.98] font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="quiz">quiz</span>
+                        Take Final Quiz
+                    </a>
+</li>
+</ul>
+</div>
+<div class="p-4 border-t border-outline-variant">
+<button class="w-full bg-surface-variant text-on-surface py-2 rounded-lg font-label-md text-label-md mb-4 hover:bg-surface-dim transition-colors">
+                Resource Library
+             </button>
+<ul class="flex flex-col">
+<li class="px-2 mb-1">
+<a class="flex items-center gap-3 text-secondary hover:text-primary px-2 py-2 rounded-lg hover:bg-surface-container-high transition-colors duration-200 font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="help">help</span>
+                        Help Center
+                    </a>
+</li>
+<li class="px-2">
+<a class="flex items-center gap-3 text-secondary hover:text-primary px-2 py-2 rounded-lg hover:bg-surface-container-high transition-colors duration-200 font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="settings">settings</span>
+                        Settings
+                    </a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-[260px] pt-16 md:pt-20 px-margin-mobile md:px-margin-desktop max-w-[1440px] mx-auto w-full flex flex-col lg:flex-row gap-gutter pb-24 lg:pb-12">
+<!-- Reading Canvas -->
+<article class="flex-1 bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] p-6 md:p-10 flex flex-col min-w-0">
+<header class="mb-8">
+<div class="flex items-center gap-2 mb-4 text-tertiary-container font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-sm" data-icon="school">school</span>
+<span>Módulo 1</span>
+<span class="material-symbols-outlined text-[10px]" data-icon="chevron_right">chevron_right</span>
+<span>Estrategia</span>
+</div>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-background mb-4">
+                    Estrategias de Crecimiento en Tiempos de Crisis
+                </h1>
+<div class="flex items-center gap-4 text-on-surface-variant font-body-sm text-body-sm pb-6 border-b border-outline-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="schedule">schedule</span>
+                        12 min de lectura
+                    </div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="person">person</span>
+                        Prof. Elena Torres
+                    </div>
+</div>
+</header>
+<div class="prose prose-slate max-w-none font-body-md text-body-md text-on-surface-variant leading-relaxed">
+<p class="mb-6">
+                    En el ecosistema empresarial moderno, la resiliencia no se trata solo de sobrevivir, sino de encontrar vías de expansión cuando el mercado se contrae. Las crisis económicas, aunque intimidantes, a menudo ocultan oportunidades estructurales para las empresas ágiles.
+                </p>
+<div class="w-full h-64 md:h-80 rounded-lg overflow-hidden mb-8 shadow-sm">
+<img class="w-full h-full object-cover" data-alt="A modern, high-contrast flat illustration depicting abstract geometric shapes representing business growth arrows breaking through a dark, turbulent cloud layer into clear, bright white skies. The color palette emphasizes professional soft blues, deep navy blacks, and crisp whites. The style is minimalist, clean, and optimistic, suitable for a premium business education platform. Soft ambient lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOjCcMvzVM980Fkcyj6RLeOXoHQTFogkiW6lyIEglDUa_z_66qfKzHcsm24o0lMF60kGuZKQUfnPRYrlCwXVjH3Syozb0PyiZZIxoeL8sMnI5N4zK7gz7Z5tCcANgnHCIN7PicVtCphcngEfFn4C8AAvDRw4vcwqSMcpavazSd1zkLnIWUkmrOpEfsG04KFWIXmEhUmIxRIamtjq26Rcu__bNxY5hOZ0iXVBtpgWqQvXeNFQCt0w-4Bw"/>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-background mt-8 mb-4">1. Reevaluación de la Propuesta de Valor</h2>
+<p class="mb-6">
+                    El primer paso crítico es auditar su propuesta de valor fundamental. ¿Lo que ofrecía hace seis meses sigue resolviendo un problema prioritario hoy? Las necesidades del consumidor cambian drásticamente bajo presión financiera. Adaptar su mensaje de marketing de "crecimiento" a "eficiencia y ahorro" suele ser una estrategia ganadora a corto plazo.
+                </p>
+<blockquote class="border-l-4 border-primary pl-4 italic bg-surface-container-low p-4 rounded-r-lg mb-6">
+                    "La crisis es un catalizador para la innovación forzada. Las empresas que no adaptan su núcleo de negocio corren el riesgo de volverse irrelevantes de la noche a la mañana."
+                </blockquote>
+<h2 class="font-headline-sm text-headline-sm text-on-background mt-8 mb-4">2. Optimización del Capital de Trabajo</h2>
+<p class="mb-6">
+                    El efectivo es el rey indiscutible durante la volatilidad. Implementar una disciplina rigurosa en el flujo de caja es vital. Esto incluye:
+                </p>
+<ul class="list-disc pl-6 mb-6 space-y-2">
+<li>Renegociación proactiva de términos de pago con proveedores clave.</li>
+<li>Liquidación de inventario obsoleto o de lento movimiento.</li>
+<li>Reducción agresiva de gastos operativos no esenciales, preservando la calidad del servicio al cliente.</li>
+</ul>
+</div>
+<!-- CTA Footer -->
+<div class="mt-12 pt-8 border-t border-outline-variant flex flex-col sm:flex-row justify-between items-center gap-4">
+<button class="w-full sm:w-auto px-6 py-3 border border-outline-variant text-on-surface font-label-md text-label-md rounded-lg hover:bg-surface-container-high transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="bookmark_border">bookmark_border</span>
+                    Guardar para después
+                </button>
+<button class="w-full sm:w-auto px-6 py-3 bg-primary text-on-primary font-label-md text-label-md rounded-lg hover:bg-on-primary-fixed-variant transition-colors flex items-center justify-center gap-2 shadow-sm">
+                    Siguiente Clase
+                    <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</article>
+<!-- Right Sidebar (Syllabus) -->
+<aside class="w-full lg:w-[320px] shrink-0 flex flex-col gap-6">
+<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] p-6">
+<h3 class="font-headline-sm text-headline-sm text-on-background mb-4">Módulo 1: Strategy</h3>
+<div class="mb-4">
+<div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant mb-2">
+<span>Progreso del módulo</span>
+<span>40%</span>
+</div>
+<div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-[40%] rounded-full"></div>
+</div>
+</div>
+<div class="space-y-1 relative before:absolute before:inset-y-4 before:left-[19px] before:w-[2px] before:bg-outline-variant">
+<!-- Completed Item -->
+<a class="relative flex items-start gap-4 p-3 rounded-lg hover:bg-surface-container-low transition-colors group cursor-pointer" href="#">
+<div class="w-6 h-6 rounded-full bg-tertiary text-on-primary flex items-center justify-center shrink-0 z-10 shadow-sm mt-0.5">
+<span class="material-symbols-outlined text-[14px]" data-icon="check" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-secondary group-hover:text-primary transition-colors">1. Introducción al Pensamiento Estratégico</p>
+<span class="font-label-sm text-label-sm text-outline">Video • 8 min</span>
+</div>
+</a>
+<!-- Completed Item -->
+<a class="relative flex items-start gap-4 p-3 rounded-lg hover:bg-surface-container-low transition-colors group cursor-pointer" href="#">
+<div class="w-6 h-6 rounded-full bg-tertiary text-on-primary flex items-center justify-center shrink-0 z-10 shadow-sm mt-0.5">
+<span class="material-symbols-outlined text-[14px]" data-icon="check" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-secondary group-hover:text-primary transition-colors">2. Análisis FODA Aplicado</p>
+<span class="font-label-sm text-label-sm text-outline">Lectura • 5 min</span>
+</div>
+</a>
+<!-- Active Item -->
+<div class="relative flex items-start gap-4 p-3 rounded-lg bg-surface-container-highest border border-primary-fixed-dim">
+<div class="w-6 h-6 rounded-full bg-surface-container-lowest border-2 border-primary text-primary flex items-center justify-center shrink-0 z-10 mt-0.5">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-background font-semibold">3. Estrategias de Crecimiento</p>
+<span class="font-label-sm text-label-sm text-primary flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[12px]" data-icon="play_circle">play_circle</span>
+                                En curso
+                            </span>
+</div>
+</div>
+<!-- Locked Item -->
+<div class="relative flex items-start gap-4 p-3 rounded-lg opacity-60">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest border border-outline-variant text-outline flex items-center justify-center shrink-0 z-10 mt-0.5">
+<span class="material-symbols-outlined text-[14px]" data-icon="lock">lock</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-secondary">4. Definiendo tu Estrella Polar (OKRs)</p>
+<span class="font-label-sm text-label-sm text-outline">Video • 15 min</span>
+</div>
+</div>
+<!-- Locked Item -->
+<div class="relative flex items-start gap-4 p-3 rounded-lg opacity-60">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest border border-outline-variant text-outline flex items-center justify-center shrink-0 z-10 mt-0.5">
+<span class="material-symbols-outlined text-[14px]" data-icon="lock">lock</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-secondary">5. Cuestionario del Módulo</p>
+<span class="font-label-sm text-label-sm text-outline">Evaluación • 10 pts</span>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] p-6 flex flex-col items-center text-center">
+<div class="w-12 h-12 bg-secondary-container rounded-full flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-secondary" data-icon="forum">forum</span>
+</div>
+<h4 class="font-label-md text-label-md font-semibold text-on-background mb-2">Foro de Discusión</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-4">Únete a la conversación con otros 234 estudiantes sobre esta clase.</p>
+<button class="w-full px-4 py-2 border border-primary text-primary font-label-md text-label-md rounded-lg hover:bg-surface-container-low transition-colors">
+                     Ver Comentarios
+                 </button>
+</div>
+</aside>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full bg-surface-container-lowest dark:bg-inverse-surface border-t border-outline-variant flex justify-around items-center h-16 z-50 px-2 pb-safe">
+<a class="flex flex-col items-center justify-center w-full h-full text-secondary hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1" data-icon="home">home</span>
+<span class="font-label-sm text-[10px]">Inicio</span>
+</a>
+<a class="flex flex-col items-center justify-center w-full h-full text-primary" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1" data-icon="play_lesson" style="font-variation-settings: 'FILL' 1;">play_lesson</span>
+<span class="font-label-sm text-[10px] font-semibold">Clase</span>
+</a>
+<a class="flex flex-col items-center justify-center w-full h-full text-secondary hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1" data-icon="folder">folder</span>
+<span class="font-label-sm text-[10px]">Recursos</span>
+</a>
+<a class="flex flex-col items-center justify-center w-full h-full text-secondary hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1" data-icon="person">person</span>
+<span class="font-label-sm text-[10px]">Perfil</span>
+</a>
+</nav>
+</body></html>

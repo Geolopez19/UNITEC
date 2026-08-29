@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RutaPyme - Diagnóstico Inicial de Madurez</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error": "#ba1a1a",
+                    "outline": "#737686",
+                    "primary-fixed": "#dbe1ff",
+                    "on-secondary-fixed": "#191c1e",
+                    "surface-tint": "#0053db",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "surface-container-low": "#eff4ff",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "on-primary-container": "#eeefff",
+                    "tertiary-container": "#007d55",
+                    "on-tertiary-fixed-variant": "#005236",
+                    "secondary": "#5c5f61",
+                    "on-secondary": "#ffffff",
+                    "surface-variant": "#d5e3fc",
+                    "surface": "#f8f9ff",
+                    "on-secondary-fixed-variant": "#444749",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-secondary-container": "#626567",
+                    "primary": "#004ac6",
+                    "surface-bright": "#f8f9ff",
+                    "on-tertiary-fixed": "#002113",
+                    "tertiary-fixed": "#6ffbbe",
+                    "surface-container-highest": "#d5e3fc",
+                    "on-surface-variant": "#434655",
+                    "secondary-fixed": "#e0e3e5",
+                    "on-primary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-container": "#2563eb",
+                    "secondary-container": "#e0e3e5",
+                    "surface-dim": "#ccdbf3",
+                    "tertiary": "#006242",
+                    "background": "#f8f9ff",
+                    "on-surface": "#0d1c2e",
+                    "on-error-container": "#93000a",
+                    "on-background": "#0d1c2e",
+                    "secondary-fixed-dim": "#c4c7c9",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "inverse-primary": "#b4c5ff",
+                    "on-error": "#ffffff",
+                    "outline-variant": "#c3c6d7",
+                    "surface-container-high": "#dce9ff",
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed": "#00174b",
+                    "surface-container": "#e6eeff",
+                    "on-tertiary-container": "#bdffdb",
+                    "inverse-surface": "#233144"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "8px",
+                    "container-max": "1440px",
+                    "sidebar-width": "260px",
+                    "margin-desktop": "32px",
+                    "gutter": "24px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "headline-sm": [
+                            "Manrope"
+                    ],
+                    "body-md": [
+                            "Inter"
+                    ],
+                    "headline-lg-mobile": [
+                            "Manrope"
+                    ],
+                    "label-sm": [
+                            "Inter"
+                    ],
+                    "label-md": [
+                            "Inter"
+                    ],
+                    "headline-md": [
+                            "Manrope"
+                    ],
+                    "headline-lg": [
+                            "Manrope"
+                    ],
+                    "body-lg": [
+                            "Inter"
+                    ],
+                    "body-sm": [
+                            "Inter"
+                    ]
+            },
+            "fontSize": {
+                    "headline-sm": [
+                            "20px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-lg-mobile": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "label-sm": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "label-md": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "letterSpacing": "0.01em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "40px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "body-sm": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "fontWeight": "400"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F8FAFC; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased min-h-screen flex">
+<!-- Main Content Canvas -->
+<main class="flex-1 min-w-0 flex flex-col h-screen overflow-hidden">
+<!-- Canvas Scrollable Area -->
+<div class="flex-1 overflow-y-auto pt-6 pb-24 px-margin-mobile md:px-margin-desktop">
+<div class="max-w-container-max mx-auto h-full flex flex-col justify-center items-center">
+<!-- Assessment Container (Bento Style) -->
+<div class="w-full max-w-4xl bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] overflow-hidden flex flex-col md:flex-row">
+<!-- Left Sidebar - Progress/Pillars -->
+<div class="w-full md:w-1/3 bg-surface-container-low p-6 md:p-8 flex flex-col border-r border-outline-variant/30">
+<div class="mb-8">
+<img alt="RutaPyme Logo" class="h-10 w-auto mb-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB89EUL6E6FPbUycLLiDvlv2QYvR1m0cRIQ1NFgBDljUxKPF9yvzyOcEa1jqV_90agQwomkwzNCuP5-aCI9aKclI_cq5xoGIKIPQQQrGaCrjew9_zO7hIpBaHXECIXHVnbFQE-GCwkOEKtTz0VXUUsoze0FF_SnxBqK-9xVT4nwJNV20UCyfMjFwPFVU7CujuBCA_twSHdSClEJFabCgP4791PsKdjXiaNgH7dE7vvRF_8JVs30kiznzQopnLc7Whewrsg"/>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-2">Diagnóstico de Madurez</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Evalúa el estado actual de tu negocio para recibir recomendaciones personalizadas.</p>
+</div>
+<!-- Stepper / Pillars -->
+<div class="flex-1 flex flex-col space-y-6">
+<!-- Step 1: Completed -->
+<div class="flex items-start">
+<div class="flex flex-col items-center mr-4">
+<div class="w-8 h-8 rounded-full bg-tertiary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-tertiary" style="font-size: 16px;">check</span>
+</div>
+<div class="w-0.5 h-10 bg-tertiary-container my-1"></div>
+</div>
+<div class="pt-1">
+<p class="font-label-md text-label-md text-on-surface">Estrategia y Liderazgo</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Completado</p>
+</div>
+</div>
+<!-- Step 2: Active -->
+<div class="flex items-start">
+<div class="flex flex-col items-center mr-4">
+<div class="w-8 h-8 rounded-full bg-primary-container ring-4 ring-primary-container/20 flex items-center justify-center shrink-0">
+<span class="font-label-sm text-label-sm text-on-primary">2</span>
+</div>
+<div class="w-0.5 h-10 bg-outline-variant my-1"></div>
+</div>
+<div class="pt-1">
+<p class="font-label-md text-label-md text-primary font-bold">Procesos y Operaciones</p>
+<p class="font-body-sm text-body-sm text-primary/80">En progreso</p>
+</div>
+</div>
+<!-- Step 3: Pending -->
+<div class="flex items-start">
+<div class="flex flex-col items-center mr-4">
+<div class="w-8 h-8 rounded-full border-2 border-outline-variant bg-surface-container-lowest flex items-center justify-center shrink-0">
+<span class="font-label-sm text-label-sm text-outline-variant">3</span>
+</div>
+<div class="w-0.5 h-10 bg-outline-variant my-1"></div>
+</div>
+<div class="pt-1">
+<p class="font-label-md text-label-md text-outline">Clientes y Mercados</p>
+</div>
+</div>
+<!-- Step 4: Pending -->
+<div class="flex items-start">
+<div class="flex flex-col items-center mr-4">
+<div class="w-8 h-8 rounded-full border-2 border-outline-variant bg-surface-container-lowest flex items-center justify-center shrink-0">
+<span class="font-label-sm text-label-sm text-outline-variant">4</span>
+</div>
+<div class="w-0.5 h-10 bg-outline-variant my-1"></div>
+</div>
+<div class="pt-1">
+<p class="font-label-md text-label-md text-outline">Personas y Cultura</p>
+</div>
+</div>
+<!-- Step 5: Pending -->
+<div class="flex items-start">
+<div class="flex flex-col items-center mr-4">
+<div class="w-8 h-8 rounded-full border-2 border-outline-variant bg-surface-container-lowest flex items-center justify-center shrink-0">
+<span class="font-label-sm text-label-sm text-outline-variant">5</span>
+</div>
+</div>
+<div class="pt-1">
+<p class="font-label-md text-label-md text-outline">Tecnología</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Content Area - Questionnaire -->
+<div class="w-full md:w-2/3 p-6 md:p-10 flex flex-col bg-surface-container-lowest">
+<!-- Header -->
+<div class="mb-8">
+<div class="flex justify-between items-center mb-4">
+<span class="font-label-sm text-label-sm text-tertiary bg-tertiary-container/10 px-3 py-1 rounded-full uppercase tracking-wider">Paso 2 de 5</span>
+<span class="font-label-md text-label-md text-on-surface-variant">25% Completado</span>
+</div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface mb-2">Procesos y Operaciones</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Evalúa cómo tu empresa gestiona sus operaciones diarias y el grado de formalización de sus procesos clave.</p>
+</div>
+<!-- Progress Bar (Overall) -->
+<div class="w-full bg-surface-container-high h-2 rounded-full mb-10 overflow-hidden">
+<div class="bg-tertiary-container h-full rounded-full transition-all duration-500 ease-in-out" style="width: 25%"></div>
+</div>
+<!-- Questions Area -->
+<div class="flex-1 space-y-8 overflow-y-auto pr-2">
+<!-- Question 1: Radio Buttons Cards -->
+<div class="space-y-4">
+<h4 class="font-headline-sm text-headline-sm text-on-surface">1. ¿Tienen documentados los procesos clave de la empresa?</h4>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Option A -->
+<label class="relative flex cursor-pointer rounded-lg border border-outline-variant p-4 shadow-sm focus:outline-none hover:bg-surface-container-low transition-colors has-[:checked]:border-primary has-[:checked]:ring-1 has-[:checked]:ring-primary has-[:checked]:bg-surface-container-low">
+<input class="peer sr-only" name="q1" type="radio" value="A"/>
+<div class="flex w-full items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface block mb-1">Nada documentado</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Todo está en la cabeza del dueño o empleados.</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant peer-checked:text-primary peer-checked:opacity-100 opacity-0 transition-opacity ml-2">check_circle</span>
+</div>
+</label>
+<!-- Option B -->
+<label class="relative flex cursor-pointer rounded-lg border border-outline-variant p-4 shadow-sm focus:outline-none hover:bg-surface-container-low transition-colors has-[:checked]:border-primary has-[:checked]:ring-1 has-[:checked]:ring-primary has-[:checked]:bg-surface-container-low">
+<input checked="" class="peer sr-only" name="q1" type="radio" value="B"/>
+<div class="flex w-full items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface block mb-1">Parcialmente</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Solo algunos procesos operativos básicos.</span>
+</div>
+<span class="material-symbols-outlined text-primary ml-2">check_circle</span>
+</div>
+</label>
+<!-- Option C -->
+<label class="relative flex cursor-pointer rounded-lg border border-outline-variant p-4 shadow-sm focus:outline-none hover:bg-surface-container-low transition-colors has-[:checked]:border-primary has-[:checked]:ring-1 has-[:checked]:ring-primary has-[:checked]:bg-surface-container-low">
+<input class="peer sr-only" name="q1" type="radio" value="C"/>
+<div class="flex w-full items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface block mb-1">Mayoría documentados</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">La mayoría, pero rara vez se actualizan.</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant peer-checked:text-primary peer-checked:opacity-100 opacity-0 transition-opacity ml-2">check_circle</span>
+</div>
+</label>
+<!-- Option D -->
+<label class="relative flex cursor-pointer rounded-lg border border-outline-variant p-4 shadow-sm focus:outline-none hover:bg-surface-container-low transition-colors has-[:checked]:border-primary has-[:checked]:ring-1 has-[:checked]:ring-primary has-[:checked]:bg-surface-container-low">
+<input class="peer sr-only" name="q1" type="radio" value="D"/>
+<div class="flex w-full items-start justify-between">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface block mb-1">Totalmente estandarizado</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Procesos claros, seguidos y actualizados regularmente.</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant peer-checked:text-primary peer-checked:opacity-100 opacity-0 transition-opacity ml-2">check_circle</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Question 2: Slider -->
+<div class="space-y-4 pt-4 border-t border-outline-variant/30">
+<div class="flex justify-between items-end">
+<h4 class="font-headline-sm text-headline-sm text-on-surface">2. Nivel de automatización de tareas repetitivas</h4>
+<span class="font-label-md text-label-md text-primary bg-primary-container/10 px-2 py-1 rounded">Nivel 2</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Ej: Facturación, envío de correos, gestión de inventario básico.</p>
+<div class="mt-6 relative">
+<input class="w-full h-2 bg-surface-container-high rounded-lg appearance-none cursor-pointer accent-primary" id="automation-slider" max="4" min="1" type="range" value="2"/>
+<div class="flex justify-between text-xs text-on-surface-variant mt-2 px-1">
+<span>Todo manual</span>
+<span>Poca auto.</span>
+<span>Auto. parcial</span>
+<span>Altamente auto.</span>
+</div>
+</div>
+</div>
+<!-- Question 3: Text Area (Optional Notes) -->
+<div class="space-y-4 pt-4 border-t border-outline-variant/30 pb-4">
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Notas adicionales sobre sus operaciones (Opcional)</h4>
+<textarea class="w-full rounded-lg border-outline-variant bg-surface-container-lowest text-on-surface focus:border-primary focus:ring-1 focus:ring-primary font-body-sm text-body-sm p-3 placeholder:text-outline/70" placeholder="Ej: Actualmente usamos Excel para inventario pero queremos cambiar..." rows="3"></textarea>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="mt-8 pt-6 border-t border-outline-variant/30 flex justify-between items-center">
+<button class="px-5 py-2.5 rounded-lg border border-outline-variant text-on-surface hover:bg-surface-container-low transition-colors font-label-md text-label-md flex items-center" type="button">
+<span class="material-symbols-outlined mr-2" style="font-size: 18px;">arrow_back</span>
+                                Anterior
+                            </button>
+<button class="px-6 py-2.5 rounded-lg bg-primary-container text-on-primary hover:bg-primary transition-colors font-label-md text-label-md shadow-sm flex items-center" type="button">
+                                Guardar y Siguiente
+                                <span class="material-symbols-outlined ml-2" style="font-size: 18px;">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

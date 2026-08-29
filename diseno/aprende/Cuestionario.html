@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Business Growth LMS - Cuestionario de Evaluación</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed": "#002113",
+                      "background": "#f8f9ff",
+                      "error-container": "#ffdad6",
+                      "on-surface-variant": "#434655",
+                      "surface-container": "#e6eeff",
+                      "secondary": "#5c5f61",
+                      "outline-variant": "#c3c6d7",
+                      "tertiary": "#006242",
+                      "on-surface": "#0d1c2e",
+                      "surface-container-highest": "#d5e3fc",
+                      "on-background": "#0d1c2e",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary-fixed-dim": "#4edea3",
+                      "on-primary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "error": "#ba1a1a",
+                      "on-secondary": "#ffffff",
+                      "secondary-fixed-dim": "#c4c7c9",
+                      "secondary-container": "#e0e3e5",
+                      "tertiary-fixed": "#6ffbbe",
+                      "secondary-fixed": "#e0e3e5",
+                      "surface-bright": "#f8f9ff",
+                      "on-tertiary-fixed-variant": "#005236",
+                      "primary-fixed-dim": "#b4c5ff",
+                      "on-primary-fixed-variant": "#003ea8",
+                      "on-primary-fixed": "#00174b",
+                      "on-secondary-fixed": "#191c1e",
+                      "surface-tint": "#0053db",
+                      "surface-variant": "#d5e3fc",
+                      "surface-dim": "#ccdbf3",
+                      "inverse-primary": "#b4c5ff",
+                      "primary-fixed": "#dbe1ff",
+                      "on-tertiary": "#ffffff",
+                      "surface": "#f8f9ff",
+                      "on-secondary-container": "#626567",
+                      "outline": "#737686",
+                      "on-error": "#ffffff",
+                      "primary": "#004ac6",
+                      "surface-container-high": "#dce9ff",
+                      "inverse-on-surface": "#eaf1ff",
+                      "on-primary-container": "#eeefff",
+                      "primary-container": "#2563eb",
+                      "on-secondary-fixed-variant": "#444749",
+                      "on-tertiary-container": "#bdffdb",
+                      "surface-container-low": "#eff4ff",
+                      "tertiary-container": "#007d55",
+                      "inverse-surface": "#233144"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-mobile": "16px",
+                      "gutter": "24px",
+                      "margin-desktop": "32px",
+                      "sidebar-width": "260px",
+                      "base": "8px",
+                      "container-max": "1440px"
+              },
+              "fontFamily": {
+                      "label-sm": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Manrope"
+                      ],
+                      "headline-md": [
+                              "Manrope"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "body-sm": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Manrope"
+                      ],
+                      "headline-sm": [
+                              "Manrope"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.01em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-sm": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-sm": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .ambient-shadow {
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.04);
+        }
+      </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex">
+<!-- SideNav -->
+<nav class="hidden md:flex w-sidebar-width h-screen fixed left-0 top-0 bg-surface-container-lowest shadow-[0px_4px_20px_rgba(0,0,0,0.04)] flex-col border-r border-outline-variant z-50">
+<div class="p-6">
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary">Business Growth LMS</h1>
+<p class="font-label-sm text-label-sm text-secondary mt-1">Modern Entrepreneurship</p>
+</div>
+<div class="flex-1 overflow-y-auto px-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-secondary hover:text-primary hover:bg-surface-container-high transition-colors duration-200 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-md text-label-md">Course Overview</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-secondary hover:text-primary hover:bg-surface-container-high transition-colors duration-200 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">lightbulb</span>
+<span class="font-label-md text-label-md">Module 1: Strategy</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-secondary hover:text-primary hover:bg-surface-container-high transition-colors duration-200 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-md text-label-md">Module 2: Finance</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-secondary hover:text-primary hover:bg-surface-container-high transition-colors duration-200 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">campaign</span>
+<span class="font-label-md text-label-md">Module 3: Marketing</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg border-l-4 border-tertiary bg-surface-container-low text-tertiary font-semibold transition-colors duration-200 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">quiz</span>
+<span class="font-label-md text-label-md">Take Final Quiz</span>
+</a>
+</div>
+<div class="p-4 border-t border-outline-variant space-y-1">
+<a class="flex items-center justify-center w-full bg-primary-container text-on-primary-container font-label-md text-label-md rounded-lg py-3 mb-4 hover:opacity-90 transition-opacity" href="#">
+                Resource Library
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-secondary hover:text-primary hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-md text-label-md">Help Center</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-secondary hover:text-primary hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</div>
+</nav>
+<!-- TopAppBar -->
+<header class="hidden md:flex fixed top-0 right-0 w-[calc(100%-260px)] z-40 bg-surface justify-between items-center px-8 h-16">
+<div class="flex items-center gap-8">
+<h2 class="font-headline-md text-headline-md font-bold text-primary">Luminous LMS</h2>
+<nav class="flex gap-6">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors cursor-pointer active:opacity-80" href="#">Dashboard</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors cursor-pointer active:opacity-80" href="#">My Courses</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors cursor-pointer active:opacity-80" href="#">Certificates</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container rounded-full border-none focus:ring-2 focus:ring-primary text-body-sm font-body-sm w-64" placeholder="Search..." type="text"/>
+</div>
+<button class="font-label-md text-label-md text-primary font-semibold hover:opacity-80 transition-opacity">Continue Learning</button>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<button class="hover:text-primary transition-colors"><span class="material-symbols-outlined">notifications</span></button>
+<button class="hover:text-primary transition-colors"><span class="material-symbols-outlined">account_circle</span></button>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="w-full md:w-[calc(100%-260px)] md:ml-[260px] mt-0 md:mt-16 min-h-screen p-margin-mobile md:p-margin-desktop flex flex-col items-center justify-center">
+<div class="w-full max-w-3xl mb-8 flex flex-col items-center">
+<img alt="Logo" class="h-16 mb-6 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnnjWUZtO7ngma_QOyCrlYY15v3zxK-oksStv3GeId69bQ_GaUp7yco7kPzb0LTm2cEukWg4DhklDet51G-g3i4EW2SQAbpIIq4dPjr4aEn3hzdXDeXfjqrSeQsUK534AYRGO01rNfDgf-ZdsF7CtBcHrqHvXHoOIAzxhTMSdW2s_rq1pObIWDKHrF6ZpEAiEz2ryfI6wh8XadTuWHLkuILhumhVFj8GHxrR1W0L2OiLmbf4X0H5rkBxQ1cryut7ga3cY"/>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2">Cuestionario de Evaluación</h2>
+<p class="font-body-md text-body-md text-secondary">Módulo 2: Finanzas para Emprendedores</p>
+</div>
+<div class="w-full max-w-3xl bg-surface-container-lowest rounded-xl ambient-shadow p-8">
+<!-- Progress -->
+<div class="mb-8">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Pregunta 3 de 10</span>
+<span class="font-label-sm text-label-sm text-tertiary">30% Completado</span>
+</div>
+<div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-tertiary rounded-full" style="width: 30%"></div>
+</div>
+</div>
+<!-- Question -->
+<div class="mb-8">
+<h3 class="font-headline-sm text-headline-sm text-on-surface leading-snug">¿Cuál es el primer paso para realizar un análisis de flujo de caja?</h3>
+</div>
+<!-- Options -->
+<div class="space-y-4 mb-10">
+<label class="flex items-start gap-4 p-4 rounded-lg border border-outline-variant cursor-pointer hover:bg-surface-container-low transition-colors group has-[:checked]:border-primary has-[:checked]:bg-surface-container">
+<input checked="" class="mt-1 text-primary focus:ring-primary border-outline-variant h-5 w-5" name="quiz_q3" type="radio"/>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface font-medium group-has-[:checked]:text-primary">Identificar todas las fuentes de ingresos esperadas.</span>
+</div>
+</label>
+<label class="flex items-start gap-4 p-4 rounded-lg border border-outline-variant cursor-pointer hover:bg-surface-container-low transition-colors group has-[:checked]:border-primary has-[:checked]:bg-surface-container">
+<input class="mt-1 text-primary focus:ring-primary border-outline-variant h-5 w-5" name="quiz_q3" type="radio"/>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface font-medium group-has-[:checked]:text-primary">Calcular el margen de beneficio neto del año anterior.</span>
+</div>
+</label>
+<label class="flex items-start gap-4 p-4 rounded-lg border border-outline-variant cursor-pointer hover:bg-surface-container-low transition-colors group has-[:checked]:border-primary has-[:checked]:bg-surface-container">
+<input class="mt-1 text-primary focus:ring-primary border-outline-variant h-5 w-5" name="quiz_q3" type="radio"/>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface font-medium group-has-[:checked]:text-primary">Contratar a un contador público certificado.</span>
+</div>
+</label>
+<label class="flex items-start gap-4 p-4 rounded-lg border border-outline-variant cursor-pointer hover:bg-surface-container-low transition-colors group has-[:checked]:border-primary has-[:checked]:bg-surface-container">
+<input class="mt-1 text-primary focus:ring-primary border-outline-variant h-5 w-5" name="quiz_q3" type="radio"/>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-surface font-medium group-has-[:checked]:text-primary">Pagar todos los impuestos pendientes.</span>
+</div>
+</label>
+</div>
+<!-- Actions -->
+<div class="flex justify-between items-center pt-6 border-t border-outline-variant">
+<button class="font-label-md text-label-md text-secondary hover:text-on-surface transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">arrow_back</span>
+                    Anterior
+                </button>
+<button class="bg-primary-container text-on-primary-container font-label-md text-label-md px-6 py-3 rounded-lg hover:bg-primary-container/90 transition-colors">
+                    Enviar Respuesta
+                </button>
+</div>
+</div>
+</main>
+</body></html>
