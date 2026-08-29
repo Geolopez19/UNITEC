@@ -52,8 +52,8 @@ export const CatalogPage: React.FC = () => {
       level_required: 2,
       category: 'Finanzas',
       duration_label: '3h 15m',
-      total_lessons: 8,
-      progress_percentage: calculateCourseProgress(user, 'flujo-de-caja', 8),
+      total_lessons: 3,
+      progress_percentage: calculateCourseProgress(user, 'flujo-de-caja', 3),
       rating: 4.8,
     },
     {
@@ -65,8 +65,8 @@ export const CatalogPage: React.FC = () => {
       level_required: 2,
       category: 'Marketing',
       duration_label: '5h 00m',
-      total_lessons: 12,
-      progress_percentage: calculateCourseProgress(user, 'marketing-digital', 12),
+      total_lessons: 3,
+      progress_percentage: calculateCourseProgress(user, 'marketing-digital', 3),
       rating: 4.7,
     },
   ];
@@ -83,19 +83,44 @@ export const CatalogPage: React.FC = () => {
         .order('order_index', { ascending: true });
 
       if (!error && data && data.length > 0) {
-        const mapped: CourseItem[] = data.map((c: any) => ({
-          id: c.id,
-          title: c.title,
-          slug: c.slug,
-          description: c.description || '',
-          thumbnail_url: c.thumbnail_url || 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80',
-          level_required: c.level_required || 1,
-          category: c.level_required === 1 ? 'Estrategia' : c.level_required === 2 ? 'Finanzas' : 'Marketing',
-          duration_label: '4h 00m',
-          total_lessons: 3,
-          progress_percentage: calculateCourseProgress(user, c.slug, 3),
-          rating: 4.9,
-        }));
+        // Fetch lesson counts for each course dynamically
+        const mapped: CourseItem[] = await Promise.all(
+          data.map(async (c: any) => {
+            let count = 3;
+            try {
+              const { data: mods } = await (supabase.from('course_modules') as any)
+                .select('id')
+                .eq('course_id', c.id);
+
+              if (mods && mods.length > 0) {
+                const { count: lessonCount } = await (supabase.from('lessons') as any)
+                  .select('id', { count: 'exact', head: true })
+                  .eq('module_id', mods[0].id);
+
+                if (lessonCount && lessonCount > 0) {
+                  count = lessonCount;
+                }
+              }
+            } catch (e) {
+              console.error(e);
+            }
+
+            return {
+              id: c.id,
+              title: c.title,
+              slug: c.slug,
+              description: c.description || '',
+              thumbnail_url: c.thumbnail_url || 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80',
+              level_required: c.level_required || 1,
+              category: c.level_required === 1 ? 'Estrategia' : c.level_required === 2 ? 'Finanzas' : 'Marketing',
+              duration_label: '4h 00m',
+              total_lessons: count,
+              progress_percentage: calculateCourseProgress(user, c.slug, count),
+              rating: 4.9,
+            };
+          })
+        );
+
         setCourses(mapped);
       }
     } catch (err) {
