@@ -67,7 +67,28 @@ export const InventoryPage: React.FC = () => {
   const [isMovementModalOpen, setIsMovementModalOpen] = useState<boolean>(false);
   const [movementProduct, setMovementProduct] = useState<InventoryItem | null>(null);
 
+  const getStorageKey = () => `rutapyme_inventory_${user?.id || 'guest'}`;
+
+  const loadLocalInventory = (): InventoryItem[] => {
+    try {
+      const stored = localStorage.getItem(getStorageKey());
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  };
+
+  const saveLocalInventory = (newItems: InventoryItem[]) => {
+    try {
+      localStorage.setItem(getStorageKey(), JSON.stringify(newItems));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const fetchInventory = async () => {
+    const localItems = loadLocalInventory();
+
     try {
       if (user) {
         const { data, error } = await (supabase.from('inventory_items') as any)
@@ -75,14 +96,26 @@ export const InventoryPage: React.FC = () => {
           .order('created_at', { ascending: false });
 
         if (!error && data && data.length > 0) {
-          setItems(data);
+          const merged = [...data];
+          // Add local items not in Supabase
+          localItems.forEach((loc) => {
+            if (!merged.some((m) => m.id === loc.id || m.sku === loc.sku)) {
+              merged.push(loc);
+            }
+          });
+          setItems(merged);
           return;
         }
       }
-      setItems(SAMPLE_INVENTORY);
+
+      if (localItems.length > 0) {
+        setItems(localItems);
+      } else {
+        setItems(SAMPLE_INVENTORY);
+      }
     } catch (err) {
       console.error('Error fetching inventory:', err);
-      setItems(SAMPLE_INVENTORY);
+      setItems(localItems.length > 0 ? localItems : SAMPLE_INVENTORY);
     }
   };
 
@@ -90,13 +123,35 @@ export const InventoryPage: React.FC = () => {
     fetchInventory();
   }, [user]);
 
+  const handleProductSuccess = (newItem?: any) => {
+    if (newItem) {
+      setItems((prev) => {
+        const exists = prev.some((i) => i.id === newItem.id);
+        let updated: InventoryItem[];
+        if (exists) {
+          updated = prev.map((i) => (i.id === newItem.id ? { ...i, ...newItem } : i));
+        } else {
+          updated = [newItem, ...prev];
+        }
+        saveLocalInventory(updated);
+        return updated;
+      });
+    }
+    fetchInventory();
+  };
+
   const handleDeleteItem = async (id: string) => {
     if (!confirm('¿Estás seguro de eliminar este producto del inventario?')) return;
 
-    if (!id.startsWith('demo-')) {
+    if (!id.startsWith('demo-') && !id.startsWith('item-')) {
       await (supabase.from('inventory_items') as any).delete().eq('id', id);
     }
-    setItems((prev) => prev.filter((item) => item.id !== id));
+
+    setItems((prev) => {
+      const updated = prev.filter((item) => item.id !== id);
+      saveLocalInventory(updated);
+      return updated;
+    });
   };
 
   // KPI Computations
@@ -216,6 +271,7 @@ export const InventoryPage: React.FC = () => {
               <option value="Electrónica">Electrónica</option>
               <option value="Electrodomésticos">Electrodomésticos</option>
               <option value="Papelería">Papelería</option>
+              <option value="General">General</option>
             </select>
           </div>
         </div>
@@ -342,7 +398,7 @@ export const InventoryPage: React.FC = () => {
       <ProductModal
         isOpen={isProductModalOpen}
         onClose={() => setIsProductModalOpen(false)}
-        onSuccess={fetchInventory}
+        onSuccess={handleProductSuccess}
         initialData={editingProduct}
       />
 

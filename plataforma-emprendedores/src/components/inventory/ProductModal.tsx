@@ -4,7 +4,7 @@ import { supabase } from '../../lib/supabaseClient';
 interface ProductModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSuccess: () => void;
+  onSuccess: (newItem?: any) => void;
   initialData?: any;
 }
 
@@ -51,40 +51,57 @@ export const ProductModal: React.FC<ProductModalProps> = ({
     setLoading(true);
     setError(null);
 
+    const generatedId = initialData?.id || `item-${Date.now()}`;
+
+    const itemObj = {
+      id: generatedId,
+      name: name || 'Producto Sin Nombre',
+      sku: sku || `SKU-${Date.now()}`,
+      category: category || 'General',
+      cost_price: Number(costPrice) || 0,
+      selling_price: Number(sellingPrice) || 0,
+      stock_quantity: Number(stockQuantity) || 0,
+      min_stock_level: Number(minStockLevel) || 5,
+      max_stock_target: Math.max(100, Number(stockQuantity) * 2),
+    };
+
     try {
       const userRes = await supabase.auth.getUser();
       const userId = userRes.data.user?.id;
 
-      const payload = {
-        name,
-        sku,
-        category,
-        cost_price: Number(costPrice),
-        selling_price: Number(sellingPrice),
-        stock_quantity: Number(stockQuantity),
-        min_stock_level: Number(minStockLevel),
-        user_id: userId,
-      };
+      if (userId) {
+        const payload = {
+          name: itemObj.name,
+          sku: itemObj.sku,
+          category: itemObj.category,
+          cost_price: itemObj.cost_price,
+          selling_price: itemObj.selling_price,
+          stock_quantity: itemObj.stock_quantity,
+          min_stock_level: itemObj.min_stock_level,
+          user_id: userId,
+        };
 
-      if (initialData?.id && !initialData.id.startsWith('demo-')) {
-        const { error: updateErr } = await (supabase.from('inventory_items') as any)
-          .update(payload)
-          .eq('id', initialData.id);
-        if (updateErr) throw updateErr;
-      } else {
-        const { error: insertErr } = await (supabase.from('inventory_items') as any).insert(payload);
-        if (insertErr) throw insertErr;
+        if (initialData?.id && !initialData.id.startsWith('demo-') && !initialData.id.startsWith('item-')) {
+          await (supabase.from('inventory_items') as any)
+            .update(payload)
+            .eq('id', initialData.id);
+        } else {
+          const { data: insertedData } = await (supabase.from('inventory_items') as any)
+            .insert(payload)
+            .select()
+            .single();
+
+          if (insertedData) {
+            itemObj.id = insertedData.id;
+          }
+        }
       }
-
-      onSuccess();
-      onClose();
     } catch (err) {
-      console.error('Error saving product:', err);
-      // Fallback success for demo
-      onSuccess();
-      onClose();
+      console.error('Error syncing product to Supabase:', err);
     } finally {
       setLoading(false);
+      onSuccess(itemObj);
+      onClose();
     }
   };
 
