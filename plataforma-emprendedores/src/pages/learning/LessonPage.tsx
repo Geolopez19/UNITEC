@@ -29,21 +29,23 @@ interface SyllabusItem {
   isQuiz?: boolean;
 }
 
-const FALLBACK_LESSONS: LessonData[] = [
-  {
-    id: 'lesson-1',
-    module_id: 'mod-1',
-    title: '1. Filosofía Lean y los 8 Desperdicios (Muda)',
-    slug: 'introduccion',
-    video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
-    content_markdown: `
+// Course-specific distinct fallback content
+const COURSE_FALLBACKS: Record<string, { title: string; moduleTitle: string; lessons: LessonData[] }> = {
+  'lean-manufacturing': {
+    title: 'Fundamentos de Lean Manufacturing & Eliminación de Desperdicios',
+    moduleTitle: 'Módulo 1: Filosofía Lean & Estabilidad Operativa',
+    lessons: [
+      {
+        id: 'lean-1',
+        module_id: 'mod-lean',
+        title: '1. Filosofía Lean y los 8 Desperdicios (Muda)',
+        slug: 'introduccion',
+        video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
+        content_markdown: `
 ## Bloque 1: Filosofía Lean y los 8 Desperdicios (Muda)
 
 ### Lectura Conceptual
-**Lean Manufacturing** es una filosofía de gestión originada en el Sistema de Producción Toyota (TPS). Su propósito central es **maximizar el valor entregado al cliente final eliminando sistemáticamente el desperdicio (*Muda*)**, la sobrecarga (*Muri*) y la variabilidad (*Mura*).
-
-* **Valor Agregado (VA):** Toda actividad que transforma el producto/servicio y por la cual el cliente está dispuesto a pagar.
-* **Desperdicio (Muda):** Todo consumo de recursos que no añade valor.
+**Lean Manufacturing** es una filosofía de gestión originada en el Sistema de Producción Toyota (TPS). Su propósito central es **maximizar el valor entregado al cliente final eliminando sistemáticamente el desperdicio (*Muda*)**.
 
 #### Los 8 Desperdicios Clásicos (TIMWOODS)
 1. **Transporte:** Mover materiales sin agregar valor.
@@ -53,74 +55,185 @@ const FALLBACK_LESSONS: LessonData[] = [
 5. **Sobreproducción:** Fabricar más o antes de lo requerido (el peor desperdicio).
 6. **Sobreprocesamiento:** Pasos adicionales no exigidos por el cliente.
 7. **Defectos:** Errores o descartes que consumen horas y material.
-8. **Talento No Aprovechado:** No escuchar ni aprovechar las ideas del equipo.
-    `,
-    duration_minutes: 8,
-    resources: [
-      { title: 'Matriz de Identificación de Desperdicios (TIMWOODS)', size: '1.4 MB', type: 'PDF' },
-      { title: 'Checklist de Verificación de Procesos', size: '650 KB', type: 'XLSX' },
-    ],
-    order_index: 1,
-  },
-  {
-    id: 'lesson-2',
-    module_id: 'mod-1',
-    title: '2. Estabilidad Operativa y Metodología 5S',
-    slug: 'estabilidad-operativa-5s',
-    video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
-    content_markdown: `
+8. **Talento No Aprovechado:** No escuchar las ideas del equipo.
+        `,
+        duration_minutes: 8,
+        resources: [
+          { title: 'Matriz TIMWOODS en PDF', size: '1.4 MB', type: 'PDF' },
+        ],
+        order_index: 1,
+      },
+      {
+        id: 'lean-2',
+        module_id: 'mod-lean',
+        title: '2. Estabilidad Operativa y Metodología 5S',
+        slug: 'estabilidad-operativa-5s',
+        video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
+        content_markdown: `
 ## Bloque 2: Estabilidad Operativa y Metodología 5S
 
-La metodología **5S** es una técnica de **gestión visual y estandarización del puesto de trabajo** orientada a que cualquier anomalía sea evidente de inmediato.
+La metodología **5S** es una técnica de **gestión visual y estandarización del puesto de trabajo**.
 
-1. **Seiri (Clasificar):** Separar lo necesario de lo innecesario en el área de trabajo.
-2. **Seiton (Ordenar):** Un lugar para cada cosa y cada cosa en su lugar con códigos visuales.
-3. **Seiso (Limpiar):** Limpiar e inspeccionar para anticipar fallas de maquinaria y puesto.
-4. **Seiketsu (Estandarizar):** Establecer normas y controles visuales auditables.
-5. **Shitsuke (Disciplina):** Fomentar el hábito de la mejora continua (Kaizen).
-    `,
-    duration_minutes: 10,
-    resources: [
-      { title: 'Plantilla de Auditoría 5S para PYMEs', size: '2.1 MB', type: 'XLSX' },
-    ],
-    order_index: 2,
-  },
-  {
-    id: 'lesson-3',
-    module_id: 'mod-1',
-    title: '3. Flujo Continuo, Takt Time y Sistemas Pull (Kanban)',
-    slug: 'flujo-continuo-takt-time',
-    video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
-    content_markdown: `
+1. **Seiri (Clasificar):** Separar lo necesario de lo innecesario.
+2. **Seiton (Ordenar):** Un lugar para cada cosa.
+3. **Seiso (Limpiar):** Limpiar e inspeccionar.
+4. **Seiketsu (Estandarizar):** Establecer normas visuales.
+5. **Shitsuke (Disciplina):** Fomentar el hábito de la mejora continua.
+        `,
+        duration_minutes: 10,
+        resources: [{ title: 'Plantilla Auditoría 5S Excel', size: '2.1 MB', type: 'XLSX' }],
+        order_index: 2,
+      },
+      {
+        id: 'lean-3',
+        module_id: 'mod-lean',
+        title: '3. Flujo Continuo, Takt Time y Sistemas Pull',
+        slug: 'flujo-continuo-takt-time',
+        video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
+        content_markdown: `
 ## Bloque 3: Flujo Continuo y Takt Time
 
-### Conceptos Clave
-- **Takt Time:** Ritmo al que el cliente demanda el producto. Se calcula dividiendo el tiempo disponible entre la demanda.
-- **Sistema Pull (Kanban):** Producir únicamente cuando el cliente o la siguiente estación lo requiere.
-- **Visualización WIP:** Limitar el trabajo en proceso para evitar cuellos de botella.
-    `,
-    duration_minutes: 12,
-    resources: [
-      { title: 'Calculadora de Takt Time & Tiempo de Ciclo', size: '980 KB', type: 'XLSX' },
+- **Takt Time:** Ritmo al que el cliente compra el producto.
+- **Sistema Pull:** Producir únicamente ante la demanda del cliente.
+        `,
+        duration_minutes: 12,
+        resources: [{ title: 'Calculadora de Takt Time', size: '980 KB', type: 'XLSX' }],
+        order_index: 3,
+      },
     ],
-    order_index: 3,
   },
-];
+  'flujo-de-caja': {
+    title: 'Gestión de Flujo de Caja e Impuestos para PYMEs',
+    moduleTitle: 'Módulo 1: Control Financiero y Salud del Negocio',
+    lessons: [
+      {
+        id: 'caja-1',
+        module_id: 'mod-caja',
+        title: '1. Importancia del Flujo de Caja en PYMEs',
+        slug: 'introduccion',
+        video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
+        content_markdown: `
+## Bloque 1: Estructura del Flujo de Caja
+
+### Lectura Conceptual
+El **Flujo de Caja** es el indicador real de supervivencia en un microemprendimiento. A diferencia de las ventas totales, mide el dinero líquido disponible para responder a las obligaciones operativas de corto plazo.
+
+#### Componentes Fundamentales
+1. **Ingresos Operativos:** Cobros reales por ventas y servicios.
+2. **Egresos Operativos:** Pagos a proveedores, nómina y servicios básicos.
+3. **Flujo Neto:** Diferencia entre entradas y salidas líquidas.
+        `,
+        duration_minutes: 10,
+        resources: [
+          { title: 'Plantilla de Flujo de Caja Semanal (Excel)', size: '1.8 MB', type: 'XLSX' },
+        ],
+        order_index: 1,
+      },
+      {
+        id: 'caja-2',
+        module_id: 'mod-caja',
+        title: '2. Proyección de Ingresos y Egresos Operativos',
+        slug: 'proyeccion-financiera',
+        video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
+        content_markdown: `
+## Bloque 2: Proyección Financiera a 90 Días
+
+Aprende a anticipar déficits de liquidez proyectando tus cobros futuros a 30, 60 y 90 días para tomar decisiones oportunas de financiamiento.
+        `,
+        duration_minutes: 15,
+        resources: [{ title: 'Guía de Proyección Financiera PDF', size: '1.1 MB', type: 'PDF' }],
+        order_index: 2,
+      },
+      {
+        id: 'caja-3',
+        module_id: 'mod-caja',
+        title: '3. Preparación Fiscal y Obligaciones Tributarias',
+        slug: 'impuestos-pyme',
+        video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
+        content_markdown: `
+## Bloque 3: Gestión de Impuestos
+
+Organiza tus reservas mensuales para cubrir obligaciones tributarias (ISV, ISR) sin afectar la operación diaria.
+        `,
+        duration_minutes: 12,
+        resources: [{ title: 'Calendario Fiscal PYME', size: '750 KB', type: 'PDF' }],
+        order_index: 3,
+      },
+    ],
+  },
+  'marketing-digital': {
+    title: 'Estrategias de Marketing Digital & Fidelización de Clientes',
+    moduleTitle: 'Módulo 1: Atracción de Clientes e Identidad Digital',
+    lessons: [
+      {
+        id: 'mkt-1',
+        module_id: 'mod-mkt',
+        title: '1. Definición del Cliente Ideal (Buyer Persona)',
+        slug: 'introduccion',
+        video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
+        content_markdown: `
+## Bloque 1: Conoce a tu Cliente Ideal
+
+### Lectura Conceptual
+Antes de invertir en publicidad digital, debes definir con precisión a tu **Buyer Persona**: hábitos, problemas principales, canales de comunicación preferidos y presupuesto disponible.
+        `,
+        duration_minutes: 9,
+        resources: [
+          { title: 'Plantilla de Definición Buyer Persona (PDF)', size: '1.2 MB', type: 'PDF' },
+        ],
+        order_index: 1,
+      },
+      {
+        id: 'mkt-2',
+        module_id: 'mod-mkt',
+        title: '2. Redes Sociales y Contenido de Valor',
+        slug: 'estrategia-contenido',
+        video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
+        content_markdown: `
+## Bloque 2: Creación de Contenido de Valor
+
+Crea una parrilla de contenidos balanceada: 70% educativo/entretenimiento y 30% promocional.
+        `,
+        duration_minutes: 11,
+        resources: [{ title: 'Calendario de Contenidos para Redes Sociales', size: '1.5 MB', type: 'XLSX' }],
+        order_index: 2,
+      },
+      {
+        id: 'mkt-3',
+        module_id: 'mod-mkt',
+        title: '3. Estrategias de Retención y Fidelización',
+        slug: 'fidelizacion',
+        video_url: 'https://www.youtube-nocookie.com/embed/u2bS9EG4btk',
+        content_markdown: `
+## Bloque 3: Fidelización y Valor del Cliente
+
+Es 5 veces más económico venderle a un cliente recurrente que adquirir uno nuevo. Diseña programas de lealtad sencillos por WhatsApp o correo.
+        `,
+        duration_minutes: 14,
+        resources: [{ title: 'Guía de Fidelización por WhatsApp', size: '890 KB', type: 'PDF' }],
+        order_index: 3,
+      },
+    ],
+  },
+};
 
 export const LessonPage: React.FC = () => {
   const navigate = useNavigate();
   const { courseSlug, lessonSlug } = useParams<{ courseSlug: string; lessonSlug: string }>();
   const { user, isAdmin } = useAuth();
 
+  const currentSlugKey = courseSlug || 'lean-manufacturing';
+  const fallbackData = COURSE_FALLBACKS[currentSlugKey] || COURSE_FALLBACKS['lean-manufacturing'];
+
   const [course, setCourse] = useState<any>({
-    title: 'Fundamentos de Lean Manufacturing & Eliminación de Desperdicios',
-    slug: 'lean-manufacturing',
+    title: fallbackData.title,
+    slug: currentSlugKey,
   });
   const [currentModule, setCurrentModule] = useState<any>({
     id: 'mod-1',
-    title: 'Módulo 1: Filosofía Lean & Estabilidad Operativa',
+    title: fallbackData.moduleTitle,
   });
-  const [currentLesson, setCurrentLesson] = useState<LessonData>(FALLBACK_LESSONS[0]);
+  const [currentLesson, setCurrentLesson] = useState<LessonData>(fallbackData.lessons[0]);
   const [syllabus, setSyllabus] = useState<SyllabusItem[]>([]);
   const [activeTab, setActiveTab] = useState<'lecture' | 'video' | 'resources'>('lecture');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -129,10 +242,9 @@ export const LessonPage: React.FC = () => {
   // Reliable completion state
   const [isLessonCompleted, setIsLessonCompleted] = useState<boolean>(false);
   const [completedCount, setCompletedCount] = useState<number>(0);
-  const [totalCount, setTotalCount] = useState<number>(3);
+  const [totalCount, setTotalCount] = useState<number>(fallbackData.lessons.length);
 
-  // Local storage helper key
-  const getStorageKey = () => `rutapyme_completed_${user?.id || 'guest'}_${courseSlug || 'lean-manufacturing'}`;
+  const getStorageKey = () => `rutapyme_completed_${user?.id || 'guest'}_${currentSlugKey}`;
 
   const loadCompletedMapFromStorage = (): Record<string, boolean> => {
     try {
@@ -147,23 +259,24 @@ export const LessonPage: React.FC = () => {
     try {
       localStorage.setItem(getStorageKey(), JSON.stringify(map));
     } catch (e) {
-      console.error('Error saving progress to localStorage:', e);
+      console.error('Error saving progress:', e);
     }
   };
 
   const fetchLessonAndCourse = async () => {
-    // Read local progress first
     const localCompletedMap = loadCompletedMapFromStorage();
 
     const targetFallback =
-      FALLBACK_LESSONS.find((l) => l.slug === lessonSlug) || FALLBACK_LESSONS[0];
+      fallbackData.lessons.find((l) => l.slug === lessonSlug) || fallbackData.lessons[0];
     setCurrentLesson(targetFallback);
+    setCourse({ title: fallbackData.title, slug: currentSlugKey });
+    setCurrentModule({ id: 'mod-1', title: fallbackData.moduleTitle });
 
     try {
-      // Fetch from Supabase
+      // Fetch course from Supabase
       const { data: courseData } = await (supabase.from('courses') as any)
         .select('*')
-        .eq('slug', courseSlug || 'lean-manufacturing')
+        .eq('slug', currentSlugKey)
         .maybeSingle();
 
       if (courseData) {
@@ -197,9 +310,7 @@ export const LessonPage: React.FC = () => {
 
               if (progressData) {
                 progressData.forEach((p: any) => {
-                  if (p.completed) {
-                    completedMap[p.lesson_id] = true;
-                  }
+                  if (p.completed) completedMap[p.lesson_id] = true;
                 });
               }
             }
@@ -237,14 +348,14 @@ export const LessonPage: React.FC = () => {
         }
       }
 
-      // Fallback behavior if Supabase is empty
-      setTotalCount(FALLBACK_LESSONS.length);
+      // Course-specific Fallback Behavior
+      setTotalCount(fallbackData.lessons.length);
       let completedMap: Record<string, boolean> = { ...localCompletedMap };
 
       const targetDone = !!(completedMap[targetFallback.id] || completedMap[targetFallback.slug]);
       setIsLessonCompleted(targetDone);
 
-      const fallbackSyl: SyllabusItem[] = FALLBACK_LESSONS.map((l) => {
+      const fallbackSyl: SyllabusItem[] = fallbackData.lessons.map((l) => {
         const isDone = !!(completedMap[l.id] || completedMap[l.slug]);
         return {
           id: l.id,
@@ -278,24 +389,19 @@ export const LessonPage: React.FC = () => {
     fetchLessonAndCourse();
   }, [courseSlug, lessonSlug, user]);
 
-  // Bulletproof Toggle completion persistence
   const handleToggleCompletion = async () => {
     if (!currentLesson) return;
     const newStatus = !isLessonCompleted;
     setIsLessonCompleted(newStatus);
 
-    // 1. Update localStorage immediately
     const currentLocalMap = loadCompletedMapFromStorage();
     if (newStatus) {
-      currentLocalMap[currentLesson.id] = true;
       currentLocalMap[currentLesson.slug] = true;
     } else {
-      delete currentLocalMap[currentLesson.id];
       delete currentLocalMap[currentLesson.slug];
     }
     saveCompletedMapToStorage(currentLocalMap);
 
-    // 2. Update syllabus state immediately
     let newDoneCount = 0;
     setSyllabus((prev) => {
       const updated = prev.map((item) => {
@@ -310,8 +416,7 @@ export const LessonPage: React.FC = () => {
 
     setCompletedCount(newDoneCount);
 
-    // 3. Update Supabase table if authenticated and valid UUID
-    if (user && !currentLesson.id.startsWith('lesson-')) {
+    if (user && !currentLesson.id.startsWith('lesson-') && !currentLesson.id.startsWith('lean-') && !currentLesson.id.startsWith('caja-') && !currentLesson.id.startsWith('mkt-')) {
       try {
         await (supabase.from('user_lesson_progress') as any).upsert({
           user_id: user.id,
@@ -345,7 +450,6 @@ export const LessonPage: React.FC = () => {
     fetchLessonAndCourse();
   };
 
-  // Find previous and next lesson for navigation
   const currentIndex = syllabus.findIndex((item) => item.slug === currentLesson?.slug);
   const prevLesson = currentIndex > 0 ? syllabus[currentIndex - 1] : null;
   const nextLesson =
@@ -357,8 +461,8 @@ export const LessonPage: React.FC = () => {
     Array.isArray(currentLesson?.resources) && currentLesson.resources.length > 0
       ? currentLesson.resources
       : [
-          { title: 'Plantilla de Diagnóstico 5S (Excel)', size: '1.2 MB', type: 'XLSX' },
-          { title: 'Matriz de Identificación TIMWOODS (PDF)', size: '2.4 MB', type: 'PDF' },
+          { title: 'Plantilla de Diagnóstico en Excel', size: '1.2 MB', type: 'XLSX' },
+          { title: 'Guía de Trabajo Práctico (PDF)', size: '2.4 MB', type: 'PDF' },
         ];
 
   return (
@@ -368,9 +472,9 @@ export const LessonPage: React.FC = () => {
         <div>
           <nav className="flex items-center gap-2 text-tertiary text-xs font-semibold uppercase tracking-wider mb-2">
             <span className="material-symbols-outlined text-sm">school</span>
-            <span>{course?.title || 'Academia RutaPyme'}</span>
+            <span>{course?.title || fallbackData.title}</span>
             <span className="material-symbols-outlined text-[10px]">chevron_right</span>
-            <span>{currentModule?.title || 'Módulo 1'}</span>
+            <span>{currentModule?.title || fallbackData.moduleTitle}</span>
           </nav>
           <h1 className="font-headline text-2xl md:text-3xl font-bold text-on-surface">
             {currentLesson?.title}
@@ -537,7 +641,7 @@ export const LessonPage: React.FC = () => {
             <div className="flex items-center gap-2 w-full md:w-auto justify-between md:justify-end">
               {prevLesson && !prevLesson.isQuiz && (
                 <button
-                  onClick={() => navigate(`/aprende/curso/${courseSlug || 'lean-manufacturing'}/leccion/${prevLesson.slug}`)}
+                  onClick={() => navigate(`/aprende/curso/${currentSlugKey}/leccion/${prevLesson.slug}`)}
                   className="px-4 py-2.5 rounded-xl border border-outline-variant text-xs font-bold text-on-surface hover:bg-surface-container-high transition-all flex items-center gap-1 cursor-pointer"
                 >
                   <span className="material-symbols-outlined text-base">arrow_back</span>
@@ -551,7 +655,7 @@ export const LessonPage: React.FC = () => {
                     if (nextLesson.isQuiz) {
                       navigate('/aprende/quiz/quiz-module-1');
                     } else {
-                      navigate(`/aprende/curso/${courseSlug || 'lean-manufacturing'}/leccion/${nextLesson.slug}`);
+                      navigate(`/aprende/curso/${currentSlugKey}/leccion/${nextLesson.slug}`);
                     }
                   }}
                   className="px-5 py-2.5 rounded-xl bg-primary text-on-primary font-bold text-xs hover:bg-on-primary-fixed-variant transition-all flex items-center gap-1 shadow-sm cursor-pointer"
@@ -590,7 +694,7 @@ export const LessonPage: React.FC = () => {
           {/* Syllabus Items Card */}
           <div className="bg-surface-container-lowest rounded-2xl shadow-level-1 p-6 border border-outline-variant/20 space-y-4">
             <h3 className="font-headline text-base font-bold text-on-surface pb-2 border-b border-outline-variant/30">
-              {course?.title || 'Temario del Curso'}
+              {course?.title || fallbackData.title}
             </h3>
 
             <div className="space-y-2">
@@ -613,7 +717,7 @@ export const LessonPage: React.FC = () => {
                       if (item.isQuiz) {
                         navigate('/aprende/quiz/quiz-module-1');
                       } else {
-                        navigate(`/aprende/curso/${courseSlug || 'lean-manufacturing'}/leccion/${item.slug}`);
+                        navigate(`/aprende/curso/${currentSlugKey}/leccion/${item.slug}`);
                       }
                     }}
                     className={`flex items-start gap-3 p-3 rounded-xl transition-all cursor-pointer ${
