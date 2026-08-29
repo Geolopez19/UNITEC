@@ -22,11 +22,29 @@ interface CourseItem {
 
 export const CatalogPage: React.FC = () => {
   const navigate = useNavigate();
-  const { profile, isAdmin } = useAuth();
+  const { user, profile, isAdmin } = useAuth();
   const [courses, setCourses] = useState<CourseItem[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  // Read real progress calculation matching LessonPage store
+  const getCourseProgress = (courseSlug: string): number => {
+    try {
+      const storageKey = `rutapyme_completed_${user?.id || 'guest'}_${courseSlug}`;
+      const stored = localStorage.getItem(storageKey);
+      if (stored) {
+        const map = JSON.parse(stored);
+        const doneCount = Object.values(map).filter(Boolean).length;
+        // Total lessons estimate: 3
+        const total = 3;
+        return Math.min(100, Math.round((doneCount / total) * 100));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    return 0;
+  };
 
   const sampleCourses: CourseItem[] = [
     {
@@ -38,8 +56,8 @@ export const CatalogPage: React.FC = () => {
       level_required: 1,
       category: 'Estrategia',
       duration_label: '4h 30m',
-      total_lessons: 5,
-      progress_percentage: 45,
+      total_lessons: 3,
+      progress_percentage: getCourseProgress('lean-manufacturing'),
       rating: 4.9,
     },
     {
@@ -52,7 +70,7 @@ export const CatalogPage: React.FC = () => {
       category: 'Finanzas',
       duration_label: '3h 15m',
       total_lessons: 8,
-      progress_percentage: 20,
+      progress_percentage: getCourseProgress('flujo-de-caja'),
       rating: 4.8,
     },
     {
@@ -65,17 +83,16 @@ export const CatalogPage: React.FC = () => {
       category: 'Marketing',
       duration_label: '5h 00m',
       total_lessons: 12,
-      progress_percentage: 0,
+      progress_percentage: getCourseProgress('marketing-digital'),
       rating: 4.7,
     },
   ];
 
   const fetchCourses = async () => {
-    // Show sample courses immediately for zero-latency initial render
+    // Initial render with dynamic progress
     setCourses(sampleCourses);
 
     try {
-      // Non-blocking background seed
       seedLearningData().catch(() => {});
 
       const { data, error } = await (supabase.from('courses') as any)
@@ -92,8 +109,8 @@ export const CatalogPage: React.FC = () => {
           level_required: c.level_required || 1,
           category: c.level_required === 1 ? 'Estrategia' : c.level_required === 2 ? 'Finanzas' : 'Marketing',
           duration_label: '4h 00m',
-          total_lessons: 8,
-          progress_percentage: 0,
+          total_lessons: 3,
+          progress_percentage: getCourseProgress(c.slug),
           rating: 4.9,
         }));
         setCourses(mapped);
@@ -105,7 +122,7 @@ export const CatalogPage: React.FC = () => {
 
   useEffect(() => {
     fetchCourses();
-  }, []);
+  }, [user]);
 
   const filteredCourses = courses.filter((course) => {
     const matchesCategory =
@@ -219,7 +236,7 @@ export const CatalogPage: React.FC = () => {
                   <div className="flex flex-col gap-1.5">
                     <div className="flex justify-between items-center text-xs font-semibold text-on-surface-variant">
                       <span>{course.progress_percentage}% Completado</span>
-                      <span>{course.duration_label} restante</span>
+                      <span>En progreso</span>
                     </div>
                     <div className="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden">
                       <div
