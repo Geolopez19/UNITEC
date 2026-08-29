@@ -8,6 +8,7 @@ import { LessonPage } from '../pages/learning/LessonPage';
 import { QuizPage } from '../pages/learning/QuizPage';
 import { InventoryPage } from '../pages/inventory/InventoryPage';
 import { SalesPage } from '../pages/sales/SalesPage';
+import { ReportsPage } from '../pages/reports/ReportsPage';
 import { ProtectedRoute } from '../components/auth/ProtectedRoute';
 
 export const AppRoutes: React.FC = () => {
@@ -47,6 +48,16 @@ export const AppRoutes: React.FC = () => {
         element={
           <ProtectedRoute requireDiagnostic={true}>
             <SalesPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Financial Reports Module Route */}
+      <Route
+        path="/reportes"
+        element={
+          <ProtectedRoute requireDiagnostic={true}>
+            <ReportsPage />
           </ProtectedRoute>
         }
       />

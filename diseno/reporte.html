@@ -1,0 +1,423 @@
+<!DOCTYPE html><html class="light" lang="es"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Módulo de Reportes - RutaPyme</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed": "#191c1e",
+                    "tertiary-container": "#007d55",
+                    "surface-container-low": "#eff4ff",
+                    "on-error-container": "#93000a",
+                    "secondary-container": "#e0e3e5",
+                    "on-secondary": "#ffffff",
+                    "primary-fixed": "#dbe1ff",
+                    "on-secondary-container": "#626567",
+                    "on-surface-variant": "#434655",
+                    "outline": "#737686",
+                    "surface-container": "#e6eeff",
+                    "primary-container": "#2563eb",
+                    "on-surface": "#0d1c2e",
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface-container-high": "#dce9ff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-fixed-variant": "#005236",
+                    "outline-variant": "#c3c6d7",
+                    "on-tertiary": "#ffffff",
+                    "surface": "#f8f9ff",
+                    "tertiary-fixed": "#6ffbbe",
+                    "surface-dim": "#ccdbf3",
+                    "on-primary-container": "#eeefff",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "on-secondary-fixed-variant": "#444749",
+                    "on-primary-fixed": "#00174b",
+                    "surface-variant": "#d5e3fc",
+                    "primary": "#004ac6",
+                    "secondary": "#5c5f61",
+                    "secondary-fixed-dim": "#c4c7c9",
+                    "background": "#f8f9ff",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "surface-tint": "#0053db",
+                    "inverse-primary": "#b4c5ff",
+                    "tertiary": "#006242",
+                    "inverse-surface": "#233144",
+                    "on-error": "#ffffff",
+                    "on-tertiary-container": "#bdffdb",
+                    "on-primary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed": "#002113",
+                    "surface-bright": "#f8f9ff",
+                    "secondary-fixed": "#e0e3e5",
+                    "on-background": "#0d1c2e",
+                    "error-container": "#ffdad6",
+                    "surface-container-highest": "#d5e3fc",
+                    "on-primary-fixed-variant": "#003ea8"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "sidebar-width": "260px",
+                    "gutter": "24px",
+                    "container-max": "1440px",
+                    "base": "8px",
+                    "margin-desktop": "32px"
+            },
+            "fontFamily": {
+                    "headline-sm": ["Manrope"],
+                    "body-sm": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Manrope"],
+                    "label-sm": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-lg-mobile": ["Manrope"],
+                    "headline-md": ["Manrope"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .shadow-ambient-1 { box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.04); }
+        .shadow-ambient-2 { box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.08); }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex font-body-md overflow-x-hidden">
+<!-- SideNavBar (Shared Component) -->
+<nav class="hidden md:flex flex-col h-screen py-6 fixed left-0 top-0 w-[260px] bg-surface-container-low dark:bg-surface-dim z-20">
+<div class="px-6 mb-8 flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg overflow-hidden flex items-center justify-center"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXfniN1ahI78I9yUzQKKR4nCMkJ0TkxE7sftcph6l6qD5jpuqnAci-9gcAqFFR_fFWVyggYCndTDWV77_Fh2rS7Cfap4fUa3D2tbuVnAR7fDIPd5aNc6oHmFMHvd3-E1LTOV-xAF41dwRdpu_TrkaqUf0bFAZvdSXC54MLd7QhFlo6lcYT74qUpYwt3CyS5-MQN-xorlJ98KDs1vDFWOoI2_DZX8hAXdN9WkEkq6FTFpDRTNYkhH3mfT6LGZIElkLysLA" alt="RutaPyme Logo" class="w-full h-full object-cover"></div>
+<div>
+<h2 class="font-headline-sm text-headline-sm font-bold text-on-surface dark:text-on-surface-variant">Workspace</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Small Business Pro</p>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto px-2 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-secondary-fixed-dim hover:bg-surface-container-high transition-colors duration-200 active:scale-[0.98] font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-secondary-fixed-dim hover:bg-surface-container-high transition-colors duration-200 active:scale-[0.98] font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="">Inventory</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-secondary-fixed-dim hover:bg-surface-container-high transition-colors duration-200 active:scale-[0.98] font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="">Sales</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-secondary-fixed-dim hover:bg-surface-container-high transition-colors duration-200 active:scale-[0.98] font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="">Customers</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 border-l-4 border-tertiary bg-surface dark:bg-surface-bright text-primary font-semibold font-label-md text-label-md rounded-r-lg" href="#">
+<span class="material-symbols-outlined" data-icon="analytics" data-weight="fill" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="">Reports</span>
+</a>
+</div>
+<div class="px-6 mt-auto">
+<button class="w-full py-2 px-4 bg-primary text-on-primary rounded-lg font-label-md text-label-md hover:bg-primary/90 transition-colors shadow-ambient-1 mb-4 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                New Entry
+            </button>
+</div>
+<div class="mt-4 px-2 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-secondary-fixed-dim hover:bg-surface-container-high transition-colors duration-200 active:scale-[0.98] font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-secondary-fixed-dim hover:bg-surface-container-high transition-colors duration-200 active:scale-[0.98] font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="">Support</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 ml-0 md:ml-[260px] flex flex-col min-h-screen">
+<!-- TopNavBar (Shared Component) -->
+<header class="flex items-center justify-between px-margin-mobile md:px-margin-desktop h-16 bg-background dark:bg-background z-10 sticky top-0">
+<div class="flex items-center gap-4">
+<button class="md:hidden text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-on-surface font-bold">Reports</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container rounded-full border-none focus:ring-2 focus:ring-primary font-body-sm text-body-sm w-64 text-on-surface placeholder:text-on-surface-variant/70" placeholder="Search..." type="text">
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant cursor-pointer">
+<img alt="User profile photo" class="w-full h-full object-cover" data-alt="A professional headshot of a business owner in a bright, modern office space. The lighting is soft and flattering, highlighting a friendly but focused expression. The background features subtle office elements like a plant or a blurred whiteboard, ensuring a professional, clean aesthetic suitable for a high-end web application profile picture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPj-xtd0l7D9by-EsIkNa63tqw9wqDAehPaJDcD5vDEpfb-IBoxhxrn5IxYt1jXhj9IlF5pwWfVXmQ2DVpgCdpM4BPauG4AUkatPgYLoNu1uhi5y6vq-0gFPbU0Hm0R66jMluahaGBAp0Wy_mVf-sxa7wpvtt812haI1exaud3Qnju3x1pooxzNcn3R0U2UeYhd41sO8toHoSC6ItRcDJf9QmG0vJzPvMW6z9KikIz2BIvRiVF1dtkOg">
+</div>
+</div>
+</header>
+<!-- Canvas -->
+<div class="flex-1 p-margin-mobile md:p-margin-desktop max-w-container-max mx-auto w-full">
+<!-- Action Bar -->
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+<div>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-bold">Resumen Financiero</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Análisis de rendimiento Q3 2023</p>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 border border-outline-variant text-on-surface rounded-lg font-label-md text-label-md hover:bg-surface-container-low transition-colors flex items-center gap-2 bg-surface">
+<span class="material-symbols-outlined text-[20px]" data-icon="picture_as_pdf">picture_as_pdf</span>
+                        Exportar PDF
+                    </button>
+<button class="px-4 py-2 border border-outline-variant text-on-surface rounded-lg font-label-md text-label-md hover:bg-surface-container-low transition-colors flex items-center gap-2 bg-surface">
+<span class="material-symbols-outlined text-[20px]" data-icon="table_view">table_view</span>
+                        Exportar Excel
+                    </button>
+</div>
+</div>
+<!-- Bento Grid Metrics -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<!-- Metric 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-ambient-1 border border-outline-variant/30">
+<div class="flex justify-between items-start mb-4">
+<div class="w-10 h-10 rounded-full bg-primary-container/20 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
+</div>
+<span class="px-2 py-1 rounded-md bg-tertiary-container/10 text-tertiary font-label-sm text-label-sm">+12.5%</span>
+</div>
+<h3 class="font-body-sm text-body-sm text-on-surface-variant mb-1">Ingresos Totales</h3>
+<p class="font-headline-md text-headline-md text-on-surface font-bold">$45,231.89</p>
+</div>
+<!-- Metric 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-ambient-1 border border-outline-variant/30">
+<div class="flex justify-between items-start mb-4">
+<div class="w-10 h-10 rounded-full bg-error-container/20 text-error flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+<span class="px-2 py-1 rounded-md bg-error-container/20 text-error font-label-sm text-label-sm">+3.2%</span>
+</div>
+<h3 class="font-body-sm text-body-sm text-on-surface-variant mb-1">Gastos Operativos</h3>
+<p class="font-headline-md text-headline-md text-on-surface font-bold">$12,450.00</p>
+</div>
+<!-- Metric 3 -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-ambient-1 border border-outline-variant/30">
+<div class="flex justify-between items-start mb-4">
+<div class="w-10 h-10 rounded-full bg-tertiary-container/20 text-tertiary flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="savings">savings</span>
+</div>
+<span class="px-2 py-1 rounded-md bg-tertiary-container/10 text-tertiary font-label-sm text-label-sm">+15.8%</span>
+</div>
+<h3 class="font-body-sm text-body-sm text-on-surface-variant mb-1">Margen Neto</h3>
+<p class="font-headline-md text-headline-md text-on-surface font-bold">$32,781.89</p>
+</div>
+</div>
+<!-- Charts Section -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+<!-- Main Chart (Projections) -->
+<div class="lg:col-span-2 bg-surface-container-lowest rounded-xl p-6 shadow-ambient-1 border border-outline-variant/30">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Proyecciones de Crecimiento</h3>
+<select class="bg-surface-container border-none text-on-surface font-body-sm text-body-sm rounded-lg focus:ring-primary focus:border-primary">
+<option>Este Año</option>
+<option>Último Año</option>
+<option>Últimos 6 Meses</option>
+</select>
+</div>
+<div class="h-[300px] w-full relative">
+<canvas id="growthChart" width="724" height="375" style="display: block; box-sizing: border-box; height: 300px; width: 579.7px;"></canvas>
+</div>
+</div>
+<!-- Donut Chart (Expenses) -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-ambient-1 border border-outline-variant/30 flex flex-col">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-6">Distribución de Gastos</h3>
+<div class="h-[220px] w-full relative flex-1 flex items-center justify-center">
+<canvas id="expenseChart" width="316" height="375" style="display: block; box-sizing: border-box; height: 300px; width: 253.1px;"></canvas>
+</div>
+<div class="mt-4 space-y-2">
+<div class="flex justify-between items-center font-body-sm text-body-sm">
+<div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-primary"></div><span class="">Nómina</span></div>
+<span class="font-medium text-on-surface">45%</span>
+</div>
+<div class="flex justify-between items-center font-body-sm text-body-sm">
+<div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-tertiary"></div><span class="">Operaciones</span></div>
+<span class="font-medium text-on-surface">30%</span>
+</div>
+<div class="flex justify-between items-center font-body-sm text-body-sm">
+<div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-outline"></div><span class="">Marketing</span></div>
+<span class="font-medium text-on-surface">25%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Detailed Data Table -->
+<div class="bg-surface-container-lowest rounded-xl shadow-ambient-1 border border-outline-variant/30 overflow-hidden">
+<div class="p-6 border-b border-outline-variant/30 flex justify-between items-center">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Rendimiento por Categoría</h3>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant/30">
+<th class="py-3 px-6 font-label-md text-label-md text-on-surface-variant font-semibold">Categoría</th>
+<th class="py-3 px-6 font-label-md text-label-md text-on-surface-variant font-semibold">Ingresos</th>
+<th class="py-3 px-6 font-label-md text-label-md text-on-surface-variant font-semibold">Gastos</th>
+<th class="py-3 px-6 font-label-md text-label-md text-on-surface-variant font-semibold">Margen</th>
+<th class="py-3 px-6 font-label-md text-label-md text-on-surface-variant font-semibold">Estado</th>
+</tr>
+</thead>
+<tbody class="font-body-sm text-body-sm">
+<tr class="border-b border-outline-variant/10 hover:bg-surface-container-lowest/50 transition-colors">
+<td class="py-4 px-6 font-medium text-on-surface">Servicios Consultoría</td>
+<td class="py-4 px-6 text-on-surface-variant">$24,500</td>
+<td class="py-4 px-6 text-on-surface-variant">$4,200</td>
+<td class="py-4 px-6 text-on-surface-variant">82%</td>
+<td class="py-4 px-6">
+<span class="px-2 py-1 rounded-full bg-tertiary-container/10 text-tertiary font-label-sm text-label-sm">Excelente</span>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/10 hover:bg-surface-container-lowest/50 transition-colors">
+<td class="py-4 px-6 font-medium text-on-surface">Venta de Licencias</td>
+<td class="py-4 px-6 text-on-surface-variant">$15,300</td>
+<td class="py-4 px-6 text-on-surface-variant">$6,100</td>
+<td class="py-4 px-6 text-on-surface-variant">60%</td>
+<td class="py-4 px-6">
+<span class="px-2 py-1 rounded-full bg-primary-container/10 text-primary font-label-sm text-label-sm">Estable</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest/50 transition-colors">
+<td class="py-4 px-6 font-medium text-on-surface">Soporte Técnico</td>
+<td class="py-4 px-6 text-on-surface-variant">$5,431</td>
+<td class="py-4 px-6 text-on-surface-variant">$2,150</td>
+<td class="py-4 px-6 text-on-surface-variant">60%</td>
+<td class="py-4 px-6">
+<span class="px-2 py-1 rounded-full bg-primary-container/10 text-primary font-label-sm text-label-sm">Estable</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Chart.js Configuration
+            Chart.defaults.font.family = 'Inter';
+            Chart.defaults.color = '#737686'; // outline color
+
+            // Growth Chart (Line)
+            const growthCtx = document.getElementById('growthChart').getContext('2d');
+            
+            // Create gradient
+            let gradient = growthCtx.createLinearGradient(0, 0, 0, 300);
+            gradient.addColorStop(0, 'rgba(0, 74, 198, 0.2)'); // Primary with opacity
+            gradient.addColorStop(1, 'rgba(0, 74, 198, 0)');
+
+            new Chart(growthCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep'],
+                    datasets: [{
+                        label: 'Ingresos',
+                        data: [22000, 24000, 27000, 26000, 30000, 32000, 38000, 42000, 45231],
+                        borderColor: '#004ac6', // Primary
+                        backgroundColor: gradient,
+                        borderWidth: 2,
+                        pointBackgroundColor: '#ffffff',
+                        pointBorderColor: '#004ac6',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#233144',
+                            padding: 12,
+                            titleFont: { size: 14, family: 'Manrope' },
+                            bodyFont: { size: 14, family: 'Inter' },
+                            displayColors: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#f1f5f9', drawBorder: false }, // Very light gray grid
+                            ticks: { callback: function(value) { return '$' + value/1000 + 'k'; } }
+                        },
+                        x: {
+                            grid: { display: false, drawBorder: false }
+                        }
+                    }
+                }
+            });
+
+            // Expense Chart (Doughnut)
+            const expenseCtx = document.getElementById('expenseChart').getContext('2d');
+            new Chart(expenseCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Nómina', 'Operaciones', 'Marketing'],
+                    datasets: [{
+                        data: [45, 30, 25],
+                        backgroundColor: [
+                            '#004ac6', // Primary
+                            '#006242', // Tertiary
+                            '#737686'  // Outline
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '75%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#233144',
+                            callbacks: {
+                                label: function(context) {
+                                    return ' ' + context.label + ': ' + context.parsed + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+
+</body></html>
